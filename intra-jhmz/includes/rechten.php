@@ -11,7 +11,7 @@
 define('RECHTEN', [
 	'forum_lezen'       => range(1, 9),
 	'forum_schrijven'   => range(2, 9),
-	'redactie'          => [3, 5, 6, 7, 8, 9],
+	'redactie'          => [3, 6, 7, 8, 9],
 	'was_lezen'         => range(4, 9),
 	'was_wijzigen'      => range(5, 9),
 	'maatjes_wijzigen'  => [7, 8, 9],       // 8 = 7
