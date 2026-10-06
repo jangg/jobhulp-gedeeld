@@ -191,41 +191,38 @@ class User extends Person
 	{
 		/*
 		beheerind:
-			0 Geeft toegang tot het intranet maar niet tot het Forum.
-			1 Geeft toegang tot het intranet inclusief mogelijkheid om Forumberichten te lezen en te schrijven.
-			2 = 1 + Toegang tot Beheer/Redactie. Hiermee kunnen nieuwsberichten (intern en extern), agendapunten (intern en extern) worden gemaakt. Ook kunnen Post-Its worden gemaakt en kan de Tickertekst van de externe website worden gewijzigd.
-			3 = 1 + Toegang tot Beheer/de WAS. Hiermee kunnen werkzoekenden, jobgroups en maatjes worden bekeken
-			4 = 1 + Toegang tot Beheer/de WAS. Hiermee kunnen werkzoekende en jobgroups worden bekeken, aangemaakt, gewijzigd en verwijderd. Maatjes kunnen alleen worden bekeken.
-			5 = 2 + 3
-			6 = 2 + 4
-			7 = 6 + Nu kunnen ook Maatjes worden toegevoegd, gewijzigd en verwijderd.
-			8 = 
-			9 = Beheerder.
+			De betekenis van beheerind verschilt per site (de code is gelijk):
+			Culemborg:  leeg/0 = geen beheerrechten, 3 = lezen, 6 = lezen/schrijven, 9 = alles
+			Zoetermeer: 0 = intranet zonder forum, 1 = + forum, 2 = + Redactie,
+			            3 = + WAS lezen, 4 = + WAS wijzigen (maatjes alleen lezen),
+			            5 = 2+3, 6 = 2+4, 7 = 6 + maatjes wijzigen, 9 = beheerder
+			Oude waarde 'j' telt als 9.
 		*/
-		if ($this->beheerind == '9')
-			return TRUE;
+		if ($this->beheerind == 'j' || $this->beheerind == '9')
+		return TRUE;
 		else
-			return FALSE;
+		return FALSE;
 	}
 	
 	public function authLevel ()
 	{
 		/*
 		beheerind:
-			0 Geeft toegang tot het intranet maar niet tot het Forum.
-			1 Geeft toegang tot het intranet inclusief mogelijkheid om Forumberichten te lezen en te schrijven.
-			2 = 1 + Toegang tot Beheer/Redactie. Hiermee kunnen nieuwsberichten (intern en extern), agendapunten (intern en extern) worden gemaakt. Ook kunnen Post-Its worden gemaakt en kan de Tickertekst van de externe website worden gewijzigd.
-			3 = 1 + Toegang tot Beheer/de WAS. Hiermee kunnen werkzoekenden, jobgroups en maatjes worden bekeken
-			4 = 1 + Toegang tot Beheer/de WAS. Hiermee kunnen werkzoekende en jobgroups worden bekeken, aangemaakt, gewijzigd en verwijderd. Maatjes kunnen alleen worden bekeken.
-			5 = 2 + 3
-			6 = 2 + 4
-			7 = 6 + Nu kunnen ook Maatjes worden toegevoegd, gewijzigd en verwijderd.
-			8 = 
-			9 = Beheerder.
+			De betekenis van beheerind verschilt per site (de code is gelijk):
+			Culemborg:  leeg/0 = geen beheerrechten, 3 = lezen, 6 = lezen/schrijven, 9 = alles
+			Zoetermeer: 0 = intranet zonder forum, 1 = + forum, 2 = + Redactie,
+			            3 = + WAS lezen, 4 = + WAS wijzigen (maatjes alleen lezen),
+			            5 = 2+3, 6 = 2+4, 7 = 6 + maatjes wijzigen, 9 = beheerder
+			Oude waarde 'j' telt als 9.
 		*/
 		if (is_numeric($this->beheerind))
 			return $this->beheerind;
-		else return '0';
+		else
+		{
+			if ($this->beheerind == 'j')
+				 return '9';
+			else return '0';
+		}
 	}
 	
 	public function mustChangePassword()

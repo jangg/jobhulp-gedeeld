@@ -13,7 +13,38 @@ class Tools
 	private static ?PHPMailer $mailer = null;  // PHP 7.4+: typed property
 	public static array $statusArray = [];
 			
-	public static function ConvertTS ($date)
+	
+    // -----------------------------------------------------------------------
+    // Nederlandstalige datum-helpers (vervangt deprecated strftime())
+    // -----------------------------------------------------------------------
+    public static function nlMaand(DateTimeImmutable $d): string
+    {
+        $maanden = [
+            1 => 'januari',  2 => 'februari', 3 => 'maart',
+            4 => 'april',    5 => 'mei',       6 => 'juni',
+            7 => 'juli',     8 => 'augustus',  9 => 'september',
+            10 => 'oktober', 11 => 'november', 12 => 'december',
+        ];
+        return $maanden[(int)$d->format('n')];
+    }
+
+    public static function nlWeekdag(DateTimeImmutable $d): string
+    {
+        $dagen = [
+            'Monday'    => 'maandag',  'Tuesday'  => 'dinsdag',
+            'Wednesday' => 'woensdag', 'Thursday' => 'donderdag',
+            'Friday'    => 'vrijdag',  'Saturday' => 'zaterdag',
+            'Sunday'    => 'zondag',
+        ];
+        return $dagen[$d->format('l')];
+    }
+
+    public static function nlDatumLang(DateTimeImmutable $d): string
+    {
+        return (int)$d->format('j') . ' ' . self::nlMaand($d) . ' ' . $d->format('Y');
+    }
+
+    public static function ConvertTS ($date)
 	{
 		$months = [
 			'January'		=> 'januari',
@@ -56,7 +87,7 @@ class Tools
 		];
 
 		$tmpdate2 = '';
-		if ($date != '')
+		if ($date != '' && $date != '0000-00-00 00:00:00')
 		{
 			/* als yyyy-mm-dd hh:mm:ss ==> dd mmm yyyy hh:mm */
 			if (preg_match("/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/", $date) !== 0)
@@ -90,7 +121,9 @@ class Tools
 		return $tmpdate2;
 	}
 	
-	public static function ConvertTS2 ($date, $par)
+	
+
+    public static function ConvertTS2 ($date, $par)
 	{
 		$months = [
 			'January'		=> 'januari',
@@ -396,6 +429,6 @@ class Tools
 	}
 }
 
-Tools::$statusArray = require __DIR__ . '/../includes/statuslijst.php';
-
+$file = __DIR__ . '/../includes/statuslijst.php';
+Tools::$statusArray = file_exists($file) ? include_once $file : [];
 ?>
