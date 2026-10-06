@@ -25,6 +25,8 @@ function h(string $value): string
 if (!isset($_SESSION['username'])) {
 	redirect('../index.php');
 }
+// Rechtencontrole (zie includes/rechten.php)
+require_recht('maatjes_wijzigen');
 
 $curr_user = new User('id', $_SESSION['userid'] ?? '1');
 
@@ -222,7 +224,7 @@ if (isset($_POST['saveMtBut']) && $_POST['saveMtBut'] === 'bewaar') {
 						</div>
 
 						<div class="forms-group mb-1">
-							<?php if ($curr_user->beheerind > 6): ?>
+							<?php if (heeft_recht('maatjes_wijzigen')): ?>
 								<button name="saveMtBut" id="saveMtBut" value="bewaar" type="submit"
 										class="btn btn-primary btn-width btn-sm">Bewaar</button>
 							<?php else: ?>

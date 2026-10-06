@@ -30,7 +30,7 @@ foreach ($userColl->userColl as $user)
 	$presentInd = $user->presentInd;
 	$htmlextra = '';
 	//echo $presentInd;
-	if ($curr_user->username == $user->username  || $curr_user->beheerind > 6)
+	if ($curr_user->username == $user->username  || heeft_recht('presentie_anderen'))
 	{
 		$first_disabled = '';
 		$htmlextra = ' id="presence_switch" value="' . $user->id . '" ';

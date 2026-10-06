@@ -1,27 +1,14 @@
 <?php
 /***************************************
-***** 0 Geeft toegang tot het intranet maar niet tot het Forum.
-***** 1 Geeft toegang tot het intranet inclusief mogelijkheid om Forumberichten te lezen en te schrijven.
-***** 2 = 1 + Toegang tot Beheer/Redactie. Hiermee kunnen nieuwsberichten (intern en extern), agendapunten (intern en extern) worden gemaakt. Ook kunnen Post-Its worden gemaakt en kan de Tickertekst ***** van de externe website worden gewijzigd.
-***** 3 = 1 + Toegang tot Beheer/de WAS. Hiermee kunnen werkzoekenden, jobgroups en maatjes worden bekeken
-***** 4 = 1 + Toegang tot Beheer/de WAS. Hiermee kunnen werkzoekende en jobgroups worden bekeken, aangemaakt, gewijzigd en verwijderd. Maatjes kunnen alleen worden bekeken.
-***** 5 = 2 + 3
-***** 6 = 2 + 4
-***** 7 = 6 + Nu kunnen ook Maatjes worden toegevoegd, gewijzigd en verwijderd.
-***** 8 = 
-***** 9 = Beheerder.
-*******************************************/
-
-$level			= isset($curr_user) ? (int)$curr_user->authLevel() : 0;
-$canForumRead 	= $level >= 1;
-$canForumWrite 	= $level >= 1;
-$canRedactie 	= $level === 2 || $level >= 5;
-$canWas			= $level >= 3; 
-// $canWasRead     = $level === 3 || $level === 5;
-// $canWasWrite    = $level === 4 || $level === 6;
-// $canWasWriteM   = $level === 7;
-// $canWasWrite    = $level >= 5;
-// $canAll 		= $level === 9;
+ * Wie wat mag, staat per site in includes/rechten.php.
+ * Hier wordt alleen gevraagd: heeft deze gebruiker dit recht?
+ * Zo gebruiken het menu en de pagina's zelf altijd dezelfde regels.
+ ***************************************/
+$canForumRead  = heeft_recht('forum_lezen');
+$canForumWrite = heeft_recht('forum_schrijven');
+$canRedactie   = heeft_recht('redactie');
+$canWas        = heeft_recht('was_lezen');
+$canAll        = heeft_recht('beheerder');
 ?>
 <nav class="navbar navbar-expand-xl navbar-dark fixed-top bg-primary">
 	<div class="container">

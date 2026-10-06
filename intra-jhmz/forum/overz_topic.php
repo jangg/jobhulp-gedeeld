@@ -17,6 +17,8 @@ if (!isset($_SESSION['username'])) {
 	header('location:../index.php');
 	exit();
 }
+// Rechtencontrole (zie includes/rechten.php)
+require_recht('forum_lezen');
 if (isset($_SESSION['userid']))
 {
 	$curr_user = new User ('id', $_SESSION['userid']);
@@ -27,7 +29,7 @@ if (isset($_SESSION['userid']))
 /**********************/
 /* bepaal het autorisatie level van de user */
 $level = isset($curr_user) ? (int)$curr_user->authLevel() : 0;
-$canForumWrite = $level >= 2;
+$canForumWrite = heeft_recht('forum_schrijven');
 
 
 if (isset($_GET['id']) && is_numeric($_GET['id']))
@@ -57,6 +59,7 @@ if (isset($_POST['resetBut']) && $_POST['resetBut'] == 'reset')
 
 if (isset($_POST['verstuurBut']) && $_POST['verstuurBut'] == 'verstuur')
 {
+	require_recht('forum_schrijven');
 	if (isset($_POST['tekst']) && $_POST['tekst'] != '')
 	{
 		$newPost= new Post();
