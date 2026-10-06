@@ -10,7 +10,7 @@
  * ------------------------------------------------------------------ */
 define('RECHTEN', [
 	'forum_lezen'       => range(1, 9),
-	'forum_schrijven'   => range(2, 9),     // zo werkt het forum nu; navbar-commentaar zei vanaf 1
+	'forum_schrijven'   => range(2, 9),
 	'redactie'          => [2, 5, 6, 7, 8, 9],
 	'was_lezen'         => range(3, 9),
 	'was_wijzigen'      => [4, 6, 7, 8, 9],
