@@ -53,7 +53,7 @@ if (isset($_SESSION['userid']))
 				om bijeen te komen in de aula van ontmoetingscentrum De Kapelaan. We willen alles volgens de regels laten verlopen en daarom werken we met kleurcodes. Iedereen die komt krijgt bij binnenkomst
 				een kleurcode toegekend. De kleur bepaalt direct waar je zit. Om te voorkomen dat mensen te dicht bij elkaar komen willen je vragen direct naar je aangewezen 
 				plek te lopen en plaats te nemen.</p>
-				<button type="button" class="btn btn-primary my-4" style="width: 300px;"><a class="text-white" href="../beheer/presentielijst.php">Kijk op de presentielijst</a></button>
+				<button type="button" class="btn btn-primary my-4" style="width: 300px;"><a class="text-white" href="../beheerred/presentielijst.php">Kijk op de presentielijst</a></button>
 			<p>Zo ziet de planning voor de avond eruit:</p>
 			</p>
 			<table class="table table-sm table-striped">
