@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+require_login();   // okt 2026: was zonder inloggen te openen
 
 for ($team = 1; $team < 6; $team++) {
 	try {

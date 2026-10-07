@@ -2,6 +2,12 @@
 .DS_Store
 
 # Foto's van personen: persoonsgegevens, horen niet in de versiegeschiedenis
-*/fotoos_person/
-*/fotoos_wkz/
-*/fotoos_wkz-oud/
+*/fotoos_person/*
+*/fotoos_wkz/*
+*/fotoos_wkz-oud/*
+*/logs/*
+# ...maar de .htaccess in die mappen wel bewaren (die beschermt de foto's)
+!*/fotoos_person/.htaccess
+!*/fotoos_wkz/.htaccess
+!*/fotoos_wkz-oud/.htaccess
+!*/logs/.htaccess
