@@ -106,7 +106,7 @@ if (isset($_POST["saveWzBut"]) && $_POST["saveWzBut"] == "bewaar1")
 	$wkz_nw->emailadres == "" ||
 	$wkz_nw->telefoonnr == ""
   ) {
-	echo '<script>alert("Niet alle verplichte velden zijn ingevuld. Probeer het opnieuw."); window.location.href = "https://' . LOC_DOMAIN . '/beheerwas/aanmelding_wkz.php";</script>';
+	echo '<script>alert("Niet alle verplichte velden zijn ingevuld. Probeer het opnieuw."); window.location.href = "/beheerwas/aanmelding_wkz.php";</script>';
   } else {
 	$wkz_nw->id_user_modified = $curr_user->id;
 	$wkz_nw->saveToDB();
@@ -131,7 +131,7 @@ if (isset($_POST["saveWzBut"]) && $_POST["saveWzBut"] == "bewaar1")
 		$wkz_nw->voornaam . " " . $wkz_nw->tussenvoegsels . " " . $wkz_nw->achternaam
 	);
 	Tools::closeMailer();
-	echo '<script>alert("De gegevens zijn in de database opgenomen."); window.location.href = "https://' . LOC_DOMAIN . '/beheerwas/overz_werkzoekenden.php";</script>';
+	echo '<script>alert("De gegevens zijn in de database opgenomen."); window.location.href = "/beheerwas/overz_werkzoekenden.php";</script>';
   }
   exit();
 }
