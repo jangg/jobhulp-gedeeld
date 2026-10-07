@@ -14,10 +14,7 @@ function redirect(string $url): void
 	exit();
 }
 
-function h(string $value): string
-{
-	return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
+// h() staat nu in config.php (voor alle pagina's)
 
 /************************
  * Sessiebeveiliging
@@ -166,7 +163,7 @@ if (isset($_POST['saveMtBut']) && $_POST['saveMtBut'] === 'bewaar') {
 							<div class="input-group-prepend" style="width: 30%;">
 								<span class="input-group-text" style="width: 100%;"><?= h($field['label']) ?></span>
 							</div>
-							<input type="<?= $field['type'] ?>" name="<?= $field['name'] ?>" id="<?= $id ?>"
+							<input type="<?= h($field['type']) ?>" name="<?= h($field['name']) ?>" id="<?= $id ?>"
 								   class="form-control" value="<?= h($field['value']) ?>" <?= $required ?>>
 						</div>
 						<?php endforeach; ?>
@@ -185,7 +182,7 @@ if (isset($_POST['saveMtBut']) && $_POST['saveMtBut'] === 'bewaar') {
 								<span class="input-group-text" style="width: 100%;">Leeftijd</span>
 							</div>
 							<input type="text" class="form-control"
-								   value="<?= ($mtj->date_geboorte ?? '') !== '' ? calculateAge($mtj->date_geboorte) : '' ?>"
+								   value="<?= h(($mtj->date_geboorte ?? '') !== '' ? calculateAge($mtj->date_geboorte) : '') ?>"
 								   disabled>
 						</div>
 
@@ -210,9 +207,9 @@ if (isset($_POST['saveMtBut']) && $_POST['saveMtBut'] === 'bewaar') {
 							<div class="input-group-prepend" style="width: 30%;">
 								<span class="input-group-text text-left text-wrap" style="width: 100%;"><?= h($cb['label']) ?></span>
 							</div>
-							<input type="checkbox" name="<?= $cb['name'] ?>" id="<?= $cb['id'] ?>"
+							<input type="checkbox" name="<?= h($cb['name']) ?>" id="<?= h($cb['id']) ?>"
 								   class="form-control" value="j" style="margin-left: 15px;"
-								   <?= $cb['checked'] ? 'checked' : '' ?>>
+								   <?= h($cb['checked'] ? 'checked' : '') ?>>
 						</div>
 						<?php endforeach; ?>
 

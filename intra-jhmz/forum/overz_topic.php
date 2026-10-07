@@ -7,7 +7,7 @@ include_once('../class/c_user.php');
 
 if (isset($_GET['topicid']))
 {
-	$_SESSION['topicid'] = $_GET['topicid'];
+	$_SESSION['topicid'] = (int)$_GET['topicid'];
 }
 
 /************************
@@ -34,7 +34,7 @@ $canForumWrite = heeft_recht('forum_schrijven');
 
 if (isset($_GET['id']) && is_numeric($_GET['id']))
 {
-	$_SESSION['id_topic'] = $_GET['id'];
+	$_SESSION['id_topic'] = (int)$_GET['id'];
 }
 else
 {
@@ -98,7 +98,7 @@ foreach ($postsColl->postColl as $post) {
 	$html .= '	
 	<tr class="d-flex mx-0">
 	<td scope="col" class="col-2 text-center mx-0 overflow-hidden">' . $datum_lp2 . '</td>
-	<td scope="col" class="col-1 text-center mx-0 overflow-hidden">' . $user->voornaam . ' ' . $user->tussenvoegsels . ' ' . $user->achternaam . '</td>
+	<td scope="col" class="col-1 text-center mx-0 overflow-hidden">' . h($user->voornaam) . ' ' . h($user->tussenvoegsels) . ' ' . h($user->achternaam) . '</td>
 	<td scope="col" class="col-9 text-left mx-0">' . $post->tekst . '</td>
 	</tr>';
 }
@@ -159,7 +159,7 @@ foreach ($postsColl->postColl as $post) {
         <div class="container">
  		   <div class="container">
 				<div class="row mt-4">
-					<div class="col-md-11 px-0"><h2 class="bluefont">Onderwerp:&nbsp<?php echo $topic->onderwerp; ?></h2></div>
+					<div class="col-md-11 px-0"><h2 class="bluefont">Onderwerp:&nbsp<?php echo h($topic->onderwerp) ?></h2></div>
 					<div class="col-md-1">
 						<button type="button" class="btn btn-primary" ><a class="text-white" href="overz_cat.php">terug</a></button>
 					</div>
@@ -180,7 +180,7 @@ foreach ($postsColl->postColl as $post) {
 				<?php echo $html; ?>
 				</tbody>
 				</table>
-					<button id="button" type="button" class="btn btn-primary" style="margin-bottom: 80px;" <?= $canForumWrite ? '' : 'disabled' ?>>Nieuw bericht maken</button>
+					<button id="button" type="button" class="btn btn-primary" style="margin-bottom: 80px;" <?= h($canForumWrite ? '' : 'disabled') ?>>Nieuw bericht maken</button>
 			</div>
 		</div>
 		<div id="nw_bericht" name="nw_bericht" class="container py-3 rounded" style="margin-bottom: 160px; border-style: solid; border-color: #304280; border-width: 2px; display: none;">

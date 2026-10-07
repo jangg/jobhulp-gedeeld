@@ -181,7 +181,7 @@ if (isset($_POST['verstuurBut']) && $_POST['verstuurBut'] == 'verstuur')
 			Maar verlaat je de pagina zonder te bewaren dan is zijn de antwoorden volgens de stand dat je de knop voor het laatst gebruikte. Houd daar rekening mee!</p>
 		<p>Alleen goede antwoorden worden geteld in de score. Het team met de meeste punten is (uiteraard) de winnaar. En voor de volledigheid: over de antwoorden en de uitslagen kan niet worden gecorrespondeerd.</p>
 		<p>Let op: je bent met meerdere maatjes in een team. Dus bedenk een tactiek om de tijd zo goed mogelijk te gebruiken.</p>
-		<h2 class="text-center text-primary">Je bent lid van team "<?= $teamrec['teamnaam'] ?>"</h2>
+		<h2 class="text-center text-primary">Je bent lid van team "<?= h($teamrec['teamnaam']) ?>"</h2>
 	</div>
 	<!-- <div class="container">
 		<h5 class="p-3 text-white bg-danger text-center" style="display: <?php // if ($error != 0x0000) echo 'block'; else echo 'none';?>">Het formulier bevat fouten. Kijk bij de vragen voor meer informatie.</h5>

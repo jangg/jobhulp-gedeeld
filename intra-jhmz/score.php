@@ -40,7 +40,7 @@ for ($team = 1; $team < 6; $team++) {
 		if ($teamrec['vr19'] == 'D') $score++;
 		if ($teamrec['vr20'] == 'B') $score++;
 			
-		echo '<p style="font-size: 2em;">De score van team "' . $teamrec['teamnaam'] .'" is ' . $score . ' goede antwoorden.<br/>';
+		echo '<p style="font-size: 2em;">De score van team "' . h($teamrec['teamnaam']) .'" is ' . $score . ' goede antwoorden.<br/>';
 }
 
 

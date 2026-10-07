@@ -130,28 +130,28 @@ $_SESSION['vrnr']++;
 			<tbody>
 				<tr>
 					<td>De Gorilla's</td>
-					<td><?= $score[0] ?></td>
+					<td><?= h($score[0]) ?></td>
 					<td><?php for ($j=0;$j<$score1;$j++) {echo '&';}?></td>
 				</tr>
 				<tr>
 					<td>De Chimpansees</td>
-					<td><?= $score[1] ?></td>
+					<td><?= h($score[1]) ?></td>
 					<td><?php for ($j=0;$j<$score1;$j++) {echo '&';}?></td>
 				</tr>
 
 				<tr>
 					<td>De Bavianen</td>
-					<td><?= $score[2] ?></td>
+					<td><?= h($score[2]) ?></td>
 					<td><?php for ($j=0;$j<$score1;$j++) {echo '&';}?></td>
 				</tr>
 				<tr>
 					<td>De Bonobo's</td>
-					<td><?= $score[3] ?></td>
+					<td><?= h($score[3]) ?></td>
 					<td><?php for ($j=0;$j<$score1;$j++) {echo '&';}?></td>
 				</tr>
 				<tr>
 					<td>De  Oerang-Oetans</td>
-					<td><?= $score[4] ?></td>
+					<td><?= h($score[4]) ?></td>
 					<td><?php for ($j=0;$j<$score1;$j++) {echo '&';}?></td>
 				</tr>
 			</tbody>

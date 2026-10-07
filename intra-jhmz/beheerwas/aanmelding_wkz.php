@@ -36,10 +36,7 @@ function chkchkbx(int $p, int $pos): bool
 }
 
 /** Veilige output: voorkomt XSS */
-function h(?string $value): string
-{
-	return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
-}
+// h() staat nu in config.php (voor alle pagina's)
 
 
 if (isset($_POST["backWzBut"]) && $_POST["backWzBut"] == "back") {
@@ -128,7 +125,7 @@ if (isset($_POST["saveWzBut"]) && $_POST["saveWzBut"] == "bewaar1")
 		"Coordinator Werkzoekenden",
 		LOC_COORD_EMAIL,
 		"Nieuwe werkzoekende toegevoegd in de WAS" . " door " . $curr_user->username,
-		$wkz_nw->voornaam . " " . $wkz_nw->tussenvoegsels . " " . $wkz_nw->achternaam
+		$wkz_nw->voornaam . " " . h($wkz_nw->tussenvoegsels) . " " . $wkz_nw->achternaam
 	);
 	Tools::closeMailer();
 	echo '<script>alert("De gegevens zijn in de database opgenomen."); window.location.href = "/beheerwas/overz_werkzoekenden.php";</script>';

@@ -61,7 +61,7 @@ foreach ($userColl->userColl as $user)
 	$html .='
 		<tr>
 			<td>' . $i . '</td>
-			<td>' . $user->voornaam . ' ' . $user->tussenvoegsels . ' ' . $user->achternaam . '</td>
+			<td>' . h($user->voornaam) . ' ' . h($user->tussenvoegsels) . ' ' . h($user->achternaam) . '</td>
 			<td>
 				<label>komt naar de maatjesavond&nbsp;&nbsp;</label>
 				<input class="usersel" type="checkbox" name="userid"' . 
@@ -70,7 +70,7 @@ foreach ($userColl->userColl as $user)
 					$second_text . '" data-onstyle="success" data-offstyle="secondary" ' .
 					$first_but . ' ' . 
 					$first_disabled . ' data-width="80px" ' . 
-					'data-userid="' . $user->id . '">
+					'data-userid="' . h($user->id) . '">
 			</td>
 		</tr>
 	
