@@ -137,7 +137,7 @@ if (isset($_POST['saveMtBut']) && $_POST['saveMtBut'] === 'bewaar') {
 		</div>
 
 		<div class="container" style="padding-bottom: 80px;">
-			<form method="POST" action="aanmelding_mtj.php" novalidate>
+			<form method="POST" action="aanmelding_mtj.php" novalidate><?= csrf_veld() ?>
 				<div class="row">
 					<div class="col-12 bg-light mt-2 pt-2">
 

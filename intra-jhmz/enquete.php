@@ -69,7 +69,7 @@ include_once('includes/chk_enquete.inc');
 	<div class="container">
 		<h5 class="p-3 text-white bg-danger text-center" style="display: <?php if ($error != 0x0000) echo 'block'; else echo 'none';?>">Het formulier bevat fouten. Kijk bij de vragen voor meer informatie.</h5>
 	</div>
-	<form method="POST" action="enquete.php" id="post" novalidate>
+	<form method="POST" action="enquete.php" id="post" novalidate><?= csrf_veld() ?>
 	<div class="container my-3 px-sm-5 py-2 bg-jhmz rounded">	
 		<div class="form-group form-check text-dark">
 		<h1>Vraag 1</h1>
