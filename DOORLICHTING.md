@@ -1,6 +1,6 @@
 # Doorlichting intra.jhmz.nl en intra.jobhulpculemborg.nl (6 oktober 2026)
 
-Kopie van het projectdocument in Claude (project "JobHulpMaatje websites"). Bijgewerkt op 8 oktober 2026.
+Kopie van het projectdocument in Claude (project "JobHulpMaatje websites"). Bijgewerkt op 8 oktober 2026 (na stap D deel 2).
 
 Doorgelicht: de lokale kopieën in ~/Sites/jobhulp-intra. De bevindingen gelden voor beide sites, tenzij anders vermeld.
 Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangssituatie.
@@ -33,7 +33,15 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - 7a03604 Forum: berichten via Tools::opmaakHtml(); getShortPost() geeft gewone tekst; forummail gefilterd.
 - 6168c6e Nieuws (tekst_kort, titel) en agenda (omschrijving, titel, freefld3) gefilterd.
 - 51c7031 Agenda: verjaardagsplaatjes weer zichtbaar (titel via opmaakHtml); namen in de verjaardagstitel ge-escaped. Gevonden door Jan bij het testen van intra-jhmz (8 okt).
+- cca4ae9 **Stap D deel 2: CSRF.** session.cookie_samesite=Lax; csrf_token()/csrf_veld()/verwijderknop() in config.php; automatische controle bij elk POST (formulierveld of kop X-CSRF-Token); 66 formulieren voorzien; jQuery-AJAX stuurt het token mee (head.php); verwijderen via POST i.p.v. ?del=j / ?delete= (werkzoekenden, maatjes, nieuws, agenda, foto's). Getest: zonder/fout token 403, met token werkt, oude ?del=j-link doet niets meer, inloggen werkt. Nog testen in MAMP.
 - Migraties 2026-10-06 en 2026-10-07 + hash_wachtwoorden.php gedraaid in MAMP. ./vergelijk.sh: twee keer OK.
+- Let op (8 okt): Jan heeft in intra-jhmz includes/body.inc, includes/chk_enquete.inc en includes/pinkster.txt verwijderd (nog niet gecommit). enquete.php laadt chk_enquete.inc nog (waarschuwing, $enquete_ready/$error ongedefinieerd).
+
+## CSRF (stap D deel 2)
+- Elk formulier met method="POST" moet `<?= csrf_veld() ?>` bevatten, anders geeft het opslaan "Het formulier kon niet worden verwerkt" (403).
+- AJAX met jQuery: gaat vanzelf goed via $.ajaxSetup in head.php. Met fetch() zelf de kop 'X-CSRF-Token' meesturen.
+- Verwijderen: verwijderknop($actie, ['del_id' => $id], 'vraag?') geeft een klein POST-formulier met prullenbak en bevestigingsvraag.
+- Nooit iets wijzigen via een GET-link. Uitzondering (alleen beheerder): maintenance/hash_wachtwoorden.php?uitvoeren en cleanDB.php?execute.
 
 ## Escaping en HTML-filter (Tools)
 - h($w): htmlspecialchars(ENT_QUOTES|ENT_SUBSTITUTE, UTF-8, double_encode=false). Voor alle gewone waarden.
@@ -85,17 +93,17 @@ Niveaus Zoetermeer: 0 zonder forum; 1 + forum lezen; 2 + redactie; 3 WAS inzien;
 
 ## Openstaande bevindingen
 HOOG
-5. Geen CSRF-bescherming, behalve in aanmelding_wkz.php. Verwijderen gaat via links (?del=j); beter via POST met token.
+5. ~~Geen CSRF-bescherming~~ opgelost in cca4ae9.
 
 MIDDEL
 8. Collectieklassen plakken WHERE-waarden als string in de SQL (vandaag veilig; id's uit de URL zijn nu (int)).
 10. 4 tabellen in latin1 (keytabel, maatje, user, wkzstatus).
-11. session.cookie_samesite ontbreekt.
+11. ~~session.cookie_samesite ontbreekt~~ opgelost in cca4ae9.
 15. Adres automatisch invullen (aanmelding_wkz) werkt niet meer: oude PDOK-URL. Later aanpassen (Jan).
 16. Bewaartermijn: cleanDB ruimt alleen handmatig gemarkeerde werkzoekenden op; intake-PDF belooft verwijdering 6 maanden na het traject.
 17. JavaScript-bibliotheken via CDN in verschillende versies.
 18. HTML-entiteiten (&eacute;) in de database; ruimen zich op bij opslaan; eventueel later een opschoonscript.
 
 ## Volgorde
-A, B, C klaar (C nog testen in MAMP). D: escaping en HTML-filter klaar; nog CSRF-token + verwijderen via POST, session.cookie_samesite.
+A, B, C, D klaar (C en D deel 2 nog testen in MAMP).
 E. Documentenfunctie, bouwt voort op A/C/D.
