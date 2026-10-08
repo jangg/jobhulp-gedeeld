@@ -35,7 +35,7 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - 51c7031 Agenda: verjaardagsplaatjes weer zichtbaar (titel via opmaakHtml); namen in de verjaardagstitel ge-escaped. Gevonden door Jan bij het testen van intra-jhmz (8 okt).
 - cca4ae9 **Stap D deel 2: CSRF.** session.cookie_samesite=Lax; csrf_token()/csrf_veld()/verwijderknop() in config.php; automatische controle bij elk POST (formulierveld of kop X-CSRF-Token); 66 formulieren voorzien; jQuery-AJAX stuurt het token mee (head.php); verwijderen via POST i.p.v. ?del=j / ?delete= (werkzoekenden, maatjes, nieuws, agenda, foto's). Getest: zonder/fout token 403, met token werkt, oude ?del=j-link doet niets meer, inloggen werkt. Nog testen in MAMP.
 - Migraties 2026-10-06 en 2026-10-07 + hash_wachtwoorden.php gedraaid in MAMP. ./vergelijk.sh: twee keer OK.
-- Let op (8 okt): Jan heeft in intra-jhmz includes/body.inc, includes/chk_enquete.inc en includes/pinkster.txt verwijderd (nog niet gecommit). enquete.php laadt chk_enquete.inc nog (waarschuwing, $enquete_ready/$error ongedefinieerd).
+- e9804be Enquête verwijderd (obsolete, besluit Jan): enquete.php, includes/chk_enquete.inc, en de ongebruikte includes/body.inc en pinkster.txt (beide sites). Migratie 2026-10-08_enquete-verwijderen.sql (DROP TABLE enquete) nog uitvoeren in MAMP en op Versio.
 
 ## CSRF (stap D deel 2)
 - Elk formulier met method="POST" moet `<?= csrf_veld() ?>` bevatten, anders geeft het opslaan "Het formulier kon niet worden verwerkt" (403).
@@ -56,7 +56,7 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 
 ## Checklist uitrollen naar Versio (per site)
 1. Back-up van database en bestanden.
-2. Migraties 2026-10-06_db-gelijktrekken_<site>.sql en 2026-10-07_wachtwoord-hash.sql uitvoeren.
+2. Migraties 2026-10-06_db-gelijktrekken_<site>.sql, 2026-10-07_wachtwoord-hash.sql en 2026-10-08_enquete-verwijderen.sql uitvoeren.
 3. configDB.php op de server controleren/aanvullen:
    - LOC_WEBSITE_PUB, LOC_JG_NAAM, LOC_JG_EMAIL toevoegen.
    - LOC_WEBSITE = adres van het intranet (Culemborg: https://intra.jobhulpculemborg.nl, zonder / aan het eind). Voor de reset-link.
@@ -68,7 +68,7 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 5. PHP-versie in DirectAdmin op 8.3 (of hoger) zetten.
 6. Nieuwe code uploaden (verborgen .htaccess-bestanden meenemen). Nieuw: includes/rechten.php, includes/pdf_instellingen.php, foto.php, reset.php, maintenance/hash_wachtwoorden.php, de .htaccess-bestanden.
 7. Map tcpdf/ op de server helemaal vervangen.
-8. Op de server verwijderen: beheer/, beheer_oud/, index_nw.php, wijzwacht_nw.php, maintenance/config.php, includes/newsmsgs*.inc, en alles wat in f31364b is verwijderd.
+8. Op de server verwijderen: beheer/, beheer_oud/, index_nw.php, wijzwacht_nw.php, maintenance/config.php, includes/newsmsgs*.inc, enquete.php, includes/chk_enquete.inc, includes/body.inc, includes/pinkster.txt, en alles wat in f31364b is verwijderd.
 9. Als beheerder: /maintenance/hash_wachtwoorden.php (tellen), dan ?uitvoeren.
 10. Testen: inloggen, rechten, wachtwoord wijzigen/vergeten, foto's (privévenster: 403), /includes/navbar.php geeft 403, intake-PDF, nieuwe werkzoekende, namen met ' & é, postits/nieuws/agenda/forum met opmaak, verjaardagen in de agenda.
 11. Controleren of mod_rewrite werkt op Versio.
