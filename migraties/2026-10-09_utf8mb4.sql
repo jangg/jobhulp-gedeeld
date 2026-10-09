@@ -15,10 +15,11 @@
 --
 -- VOORAF:
 --  1. Back-up maken (phpMyAdmin > Exporteren).
---  2. Controle op al verminkte tekst (moet 0 rijen geven; zo niet: eerst melden):
---       SELECT id, omschrijving, functie FROM maatje WHERE CONCAT_WS(' ',omschrijving,functie) LIKE '%Ã%';
---       SELECT id, username FROM user WHERE username LIKE '%Ã%';
---       SELECT id, omschrijving FROM wkzstatus WHERE omschrijving LIKE '%Ã%';
+--  2. Controle op al verminkte tekst (moet 0 rijen geven; zo niet: eerst melden).
+--     COLLATE utf8mb4_bin is nodig: zonder dat vindt LIKE '%Ã%' na de omzetting ook elke gewone 'a'.
+--       SELECT id, omschrijving, functie FROM maatje WHERE CONCAT_WS(' ',omschrijving,functie) COLLATE utf8mb4_bin LIKE '%Ã%';
+--       SELECT id, username FROM user WHERE username COLLATE utf8mb4_bin LIKE '%Ã%';
+--       SELECT id, omschrijving FROM wkzstatus WHERE omschrijving COLLATE utf8mb4_bin LIKE '%Ã%';
 --
 -- Uitvoeren: database selecteren in phpMyAdmin, tabblad SQL, dit bestand plakken.
 -- Daarna: ./vergelijk.sh (moet twee keer OK geven).
