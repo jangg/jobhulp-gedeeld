@@ -40,7 +40,7 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - 6da5da4 Meldingen uit php_error.log opgelost (substr op NULL in overz_newsitems, overz_werkzoekenden, overz_wkz_vrjrdgn); verjaardagen maatjes in agenda gebruikten vaste jaartallen 2026/2027, nu huidig/volgend jaar. Log in MAMP daarna leeggemaakt; databases gelijk (vergelijk.sh 2x OK).
 - 0709a62 Forummail Zoetermeer: CharSet UTF-8 ontbrak.
 - werkzkdBU (oude reservekopie van werkzkd, ongebruikt) door Jan in MAMP verwijderd (9 okt); migratie 2026-10-09_werkzkdBU-verwijderen.sql voor Versio.
-- utf8mb4: migratie 2026-10-09_utf8mb4.sql en SET NAMES 'utf8mb4' in config.php. Nog uitvoeren in MAMP.
+- utf8mb4: migratie 2026-10-09_utf8mb4.sql en SET NAMES 'utf8mb4' in config.php. In MAMP uitgevoerd (9 okt); controle op verminkte tekst (met COLLATE utf8mb4_bin) in beide databases 0 rijen.
 
 ## CSRF (stap D deel 2)
 - Elk formulier met method="POST" moet `<?= csrf_veld() ?>` bevatten, anders geeft het opslaan "Het formulier kon niet worden verwerkt" (403).
