@@ -35,8 +35,9 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - 51c7031 Agenda: verjaardagsplaatjes weer zichtbaar (titel via opmaakHtml); namen in de verjaardagstitel ge-escaped. Gevonden door Jan bij het testen van intra-jhmz (8 okt).
 - cca4ae9 **Stap D deel 2: CSRF.** session.cookie_samesite=Lax; csrf_token()/csrf_veld()/verwijderknop() in config.php; automatische controle bij elk POST (formulierveld of kop X-CSRF-Token); 66 formulieren voorzien; jQuery-AJAX stuurt het token mee (head.php); verwijderen via POST i.p.v. ?del=j / ?delete= (werkzoekenden, maatjes, nieuws, agenda, foto's). Getest: zonder/fout token 403, met token werkt, oude ?del=j-link doet niets meer, inloggen werkt. Nog testen in MAMP.
 - Migraties 2026-10-06 en 2026-10-07 + hash_wachtwoorden.php gedraaid in MAMP. ./vergelijk.sh: twee keer OK.
-- e9804be Enquête verwijderd (obsolete, besluit Jan): enquete.php, includes/chk_enquete.inc, en de ongebruikte includes/body.inc en pinkster.txt (beide sites). Migratie 2026-10-08_enquete-verwijderen.sql (DROP TABLE enquete) nog uitvoeren in MAMP en op Versio.
-- b1d6f9d Pubquiz verwijderd (eenmalig gebruikt, besluit Jan): pubquiz.php, pubquizantw.php, score.php, pages/pubquizregels.php. Migratie 2026-10-08_pubquiz-verwijderen.sql (DROP TABLE pubquizteams) nog uitvoeren.
+- e9804be Enquête verwijderd (obsolete, besluit Jan): enquete.php, includes/chk_enquete.inc, en de ongebruikte includes/body.inc en pinkster.txt (beide sites). Migratie 2026-10-08_enquete-verwijderen.sql (DROP TABLE enquete): MAMP gedaan (9 okt), Versio nog.
+- b1d6f9d Pubquiz verwijderd (eenmalig gebruikt, besluit Jan): pubquiz.php, pubquizantw.php, score.php, pages/pubquizregels.php. Migratie 2026-10-08_pubquiz-verwijderen.sql (DROP TABLE pubquizteams): MAMP gedaan (9 okt), Versio nog.
+- 6da5da4 Meldingen uit php_error.log opgelost (substr op NULL in overz_newsitems, overz_werkzoekenden, overz_wkz_vrjrdgn); verjaardagen maatjes in agenda gebruikten vaste jaartallen 2026/2027, nu huidig/volgend jaar. Log in MAMP daarna leeggemaakt; databases gelijk (vergelijk.sh 2x OK).
 
 ## CSRF (stap D deel 2)
 - Elk formulier met method="POST" moet `<?= csrf_veld() ?>` bevatten, anders geeft het opslaan "Het formulier kon niet worden verwerkt" (403).
