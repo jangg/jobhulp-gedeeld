@@ -73,7 +73,7 @@ Algemene regel: **een link (GET) mag alleen iets tonen, nooit iets wijzigen.**
 
 ### 4. Wie mag dit? `require_recht()`, `heeft_recht()`, `knop_uit()`
 
-De namen van de rechten staan in `includes/rechten.php` (verschilt per site):
+De namen van de rechten staan in `includes/rechten.php` (gelijk voor beide sites):
 `forum_lezen`, `forum_schrijven`, `redactie`, `was_lezen`, `was_wijzigen`,
 `maatjes_wijzigen`, `presentie_anderen`, `beheerder`.
 
@@ -91,8 +91,23 @@ if (heeft_recht('maatjes_wijzigen')) { // iets alleen tonen als iemand het mag
 `knop_uit()` is alleen gemak voor de gebruiker. Controleer bij het **verwerken**
 altijd nog met `require_recht()`.
 
-Wie welk niveau heeft, blijft `user.beheerind`. Een niveau een ander recht geven:
-alleen `rechten.php` aanpassen.
+Wie welk niveau heeft, staat in `user.beheerind`. De niveaus betekenen in beide sites hetzelfde:
+
+| Niveau | Mag |
+|---|---|
+| 0 | inloggen, geen forum |
+| 1 | forum lezen (buitenstaander) |
+| 2 | + forum schrijven (maatje) |
+| 3 | 2 + redactie |
+| 4 | 2 + WAS lezen |
+| 5 | 2 + WAS lezen en schrijven |
+| 6 | 5 + maatjes wijzigen/verwijderen, anderen aanmelden voor maatjesavonden |
+| 7 | redactie + WAS lezen |
+| 8 | redactie + WAS lezen en schrijven |
+| 9 | alles (beheerder) |
+
+Een niveau een ander recht geven: alleen `rechten.php` aanpassen, in **beide** sites
+gelijk (`./vergelijk.sh` controleert dat).
 
 ### 5. Veld waarin de redactie HTML-opmaak gebruikt? `Tools::veiligeHtml()` of `Tools::opmaakHtml()`
 

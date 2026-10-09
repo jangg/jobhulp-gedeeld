@@ -2,6 +2,7 @@
 # ==================================================================
 # vergelijk.sh — controleert of beide intranetten gelijk lopen in:
 #   1. de map class/      (de PHP-classes moeten 100% gelijk zijn)
+#      en includes/rechten.php (de rechten zijn voor beide sites gelijk)
 #   2. de database-structuur (tabellen, kolommen, indexen)
 #
 # Gebruik (in Terminal):
@@ -32,6 +33,12 @@ if diff -r -x .DS_Store intra-jhmz/class intra-culemborg/class; then
 	echo "   OK: classes zijn gelijk"
 else
 	echo "   LET OP: classes verschillen (zie hierboven; < = jhmz, > = culemborg)"
+	FOUT=1
+fi
+if diff intra-jhmz/includes/rechten.php intra-culemborg/includes/rechten.php; then
+	echo "   OK: rechten.php is gelijk"
+else
+	echo "   LET OP: rechten.php verschilt (zie hierboven; < = jhmz, > = culemborg)"
 	FOUT=1
 fi
 
