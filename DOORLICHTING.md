@@ -38,6 +38,8 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - e9804be Enquête verwijderd (obsolete, besluit Jan): enquete.php, includes/chk_enquete.inc, en de ongebruikte includes/body.inc en pinkster.txt (beide sites). Migratie 2026-10-08_enquete-verwijderen.sql (DROP TABLE enquete): MAMP gedaan (9 okt), Versio nog.
 - b1d6f9d Pubquiz verwijderd (eenmalig gebruikt, besluit Jan): pubquiz.php, pubquizantw.php, score.php, pages/pubquizregels.php. Migratie 2026-10-08_pubquiz-verwijderen.sql (DROP TABLE pubquizteams): MAMP gedaan (9 okt), Versio nog.
 - 6da5da4 Meldingen uit php_error.log opgelost (substr op NULL in overz_newsitems, overz_werkzoekenden, overz_wkz_vrjrdgn); verjaardagen maatjes in agenda gebruikten vaste jaartallen 2026/2027, nu huidig/volgend jaar. Log in MAMP daarna leeggemaakt; databases gelijk (vergelijk.sh 2x OK).
+- 0709a62 Forummail Zoetermeer: CharSet UTF-8 ontbrak.
+- utf8mb4: migratie 2026-10-09_utf8mb4.sql en SET NAMES 'utf8mb4' in config.php. Nog uitvoeren in MAMP.
 
 ## CSRF (stap D deel 2)
 - Elk formulier met method="POST" moet `<?= csrf_veld() ?>` bevatten, anders geeft het opslaan "Het formulier kon niet worden verwerkt" (403).
@@ -58,7 +60,7 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 
 ## Checklist uitrollen naar Versio (per site)
 1. Back-up van database en bestanden.
-2. Migraties 2026-10-06_db-gelijktrekken_<site>.sql, 2026-10-07_wachtwoord-hash.sql, 2026-10-08_enquete-verwijderen.sql en 2026-10-08_pubquiz-verwijderen.sql uitvoeren.
+2. Migraties 2026-10-06_db-gelijktrekken_<site>.sql, 2026-10-07_wachtwoord-hash.sql, 2026-10-08_enquete-verwijderen.sql, 2026-10-08_pubquiz-verwijderen.sql en 2026-10-09_utf8mb4.sql uitvoeren (utf8mb4 tegelijk met de nieuwe config.php).
 3. configDB.php op de server controleren/aanvullen:
    - LOC_WEBSITE_PUB, LOC_JG_NAAM, LOC_JG_EMAIL toevoegen.
    - LOC_WEBSITE = adres van het intranet (Culemborg: https://intra.jobhulpculemborg.nl, zonder / aan het eind). Voor de reset-link.
@@ -99,7 +101,7 @@ HOOG
 
 MIDDEL
 8. Collectieklassen plakken WHERE-waarden als string in de SQL (vandaag veilig; id's uit de URL zijn nu (int)).
-10. 4 tabellen in latin1 (keytabel, maatje, user, wkzstatus).
+10. ~~4 tabellen in latin1~~ migratie 2026-10-09_utf8mb4.sql (alle tabellen utf8mb4) + config.php SET NAMES 'utf8mb4'.
 11. ~~session.cookie_samesite ontbreekt~~ opgelost in cca4ae9.
 15. Adres automatisch invullen (aanmelding_wkz) werkt niet meer: oude PDOK-URL. Later aanpassen (Jan).
 16. Bewaartermijn: cleanDB ruimt alleen handmatig gemarkeerde werkzoekenden op; intake-PDF belooft verwijdering 6 maanden na het traject.
