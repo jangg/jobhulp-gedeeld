@@ -39,6 +39,7 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - b1d6f9d Pubquiz verwijderd (eenmalig gebruikt, besluit Jan): pubquiz.php, pubquizantw.php, score.php, pages/pubquizregels.php. Migratie 2026-10-08_pubquiz-verwijderen.sql (DROP TABLE pubquizteams): MAMP gedaan (9 okt), Versio nog.
 - 6da5da4 Meldingen uit php_error.log opgelost (substr op NULL in overz_newsitems, overz_werkzoekenden, overz_wkz_vrjrdgn); verjaardagen maatjes in agenda gebruikten vaste jaartallen 2026/2027, nu huidig/volgend jaar. Log in MAMP daarna leeggemaakt; databases gelijk (vergelijk.sh 2x OK).
 - 0709a62 Forummail Zoetermeer: CharSet UTF-8 ontbrak.
+- werkzkdBU (oude reservekopie van werkzkd, ongebruikt) door Jan in MAMP verwijderd (9 okt); migratie 2026-10-09_werkzkdBU-verwijderen.sql voor Versio.
 - utf8mb4: migratie 2026-10-09_utf8mb4.sql en SET NAMES 'utf8mb4' in config.php. Nog uitvoeren in MAMP.
 
 ## CSRF (stap D deel 2)
@@ -60,7 +61,7 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 
 ## Checklist uitrollen naar Versio (per site)
 1. Back-up van database en bestanden.
-2. Migraties 2026-10-06_db-gelijktrekken_<site>.sql, 2026-10-07_wachtwoord-hash.sql, 2026-10-08_enquete-verwijderen.sql, 2026-10-08_pubquiz-verwijderen.sql en 2026-10-09_utf8mb4.sql uitvoeren (utf8mb4 tegelijk met de nieuwe config.php).
+2. Migraties 2026-10-06_db-gelijktrekken_<site>.sql, 2026-10-07_wachtwoord-hash.sql, 2026-10-08_enquete-verwijderen.sql, 2026-10-08_pubquiz-verwijderen.sql, 2026-10-09_werkzkdBU-verwijderen.sql en 2026-10-09_utf8mb4.sql uitvoeren (utf8mb4 tegelijk met de nieuwe config.php).
 3. configDB.php op de server controleren/aanvullen:
    - LOC_WEBSITE_PUB, LOC_JG_NAAM, LOC_JG_EMAIL toevoegen.
    - LOC_WEBSITE = adres van het intranet (Culemborg: https://intra.jobhulpculemborg.nl, zonder / aan het eind). Voor de reset-link.
