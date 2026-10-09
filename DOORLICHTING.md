@@ -1,6 +1,6 @@
 # Doorlichting intra.jhmz.nl en intra.jobhulpculemborg.nl (6 oktober 2026)
 
-Kopie van het projectdocument in Claude (project "JobHulpMaatje websites"). Bijgewerkt op 8 oktober 2026 (na stap D deel 2).
+Kopie van het projectdocument in Claude (project "JobHulpMaatje websites"). Bijgewerkt op 9 oktober 2026 (log opgeschoond, migraties in MAMP gedaan).
 
 Doorgelicht: de lokale kopieën in ~/Sites/jobhulp-intra. De bevindingen gelden voor beide sites, tenzij anders vermeld.
 Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangssituatie.
@@ -107,5 +107,5 @@ MIDDEL
 18. HTML-entiteiten (&eacute;) in de database; ruimen zich op bij opslaan; eventueel later een opschoonscript.
 
 ## Volgorde
-A, B, C, D klaar (C en D deel 2 nog testen in MAMP).
+A, B, C, D klaar en door Jan getest in MAMP (9 okt: geen nieuwe fouten, php_error.log leeg). Volgende: uitrol naar Versio.
 E. Documentenfunctie, bouwt voort op A/C/D.
