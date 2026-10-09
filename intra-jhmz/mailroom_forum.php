@@ -88,6 +88,7 @@ function createMailer(): PHPMailer
 	$mail->addReplyTo('no-reply@jhmz.nl', 'No Reply');
 	$mail->isHTML(true);
 	$mail->SMTPDebug = MAIL_DEBUG_IND ?? 0;
+	$mail->CharSet = 'UTF-8';
 
 	return $mail;
 }
