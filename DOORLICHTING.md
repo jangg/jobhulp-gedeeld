@@ -1,6 +1,6 @@
 # Doorlichting intra.jhmz.nl en intra.jobhulpculemborg.nl (6 oktober 2026)
 
-Kopie van het projectdocument in Claude (project "JobHulpMaatje websites"). Bijgewerkt op 9 oktober 2026 (log opgeschoond, migraties in MAMP gedaan).
+Kopie van het projectdocument in Claude (project "JobHulpMaatje websites"). Bijgewerkt op 11 oktober 2026 (Zoetermeer live; publieke site Zoetermeer met dezelfde classes).
 
 Doorgelicht: de lokale kopieën in ~/Sites/jobhulp-intra. De bevindingen gelden voor beide sites, tenzij anders vermeld.
 Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangssituatie.
@@ -16,8 +16,11 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - Oude bestanden die niet gebruikt worden mogen weg.
 - De redactie gebruikt HTML-opmaak in postits (titel/tekst) en nieuwstitels.
 - Eén codebasis voor beide sites (alle verschillen in configDB/rechten) zou Jan fantastisch vinden, maar is een groot project; later.
+- De publieke websites gebruiken dezelfde database en dezelfde classes als het intranet van hun organisatie. class/ moet in alle sites gelijk zijn (vergelijk.sh controleert ook pub-jhmz en pub-jhc).
+- De statuslijst (includes/statuslijst.php) verschilt per organisatie en staat daarom niet in class/.
+- Git doet Claude (besluit Jan, 11 okt); Jan bekijkt de status in Nova. Nova-project = ~/Sites/jobhulp-intra.
 
-## Status (lokaal, nog niet op de servers)
+## Status
 - e00ef11 Noodreparatie: login-controle op onbeveiligde pagina's.
 - fb4a789, e9cd7d4, c9d286f, 5666611: configDB-constanten, classes gelijk, migraties/, vergelijk.sh, cron-herkenning, beheer/ weg.
 - 2c8e89d … 206b0f0, e02ea05 **Stap A: rechten met een naam** (+ knop_uit()).
@@ -42,6 +45,14 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - werkzkdBU (oude reservekopie van werkzkd, ongebruikt) door Jan in MAMP verwijderd (9 okt); migratie 2026-10-09_werkzkdBU-verwijderen.sql voor Versio.
 - Rechten gelijkgetrokken: één rechten.php voor beide sites, migraties 2026-10-09_rechten-gelijk_<site>.sql (in MAMP uitgevoerd 9 okt; vergelijk.sh 3x OK), vergelijk.sh vergelijkt ook rechten.php. beheerred/presentielijst.php verwijderd (oud, besluit Jan); pages/presence_list.php blijft (aanmelden maatjesavonden).
 - utf8mb4: migratie 2026-10-09_utf8mb4.sql en SET NAMES 'utf8mb4' in config.php. In MAMP uitgevoerd (9 okt); controle op verminkte tekst (met COLLATE utf8mb4_bin) in beide databases 0 rijen.
+- Onderhoudsmodus (10 okt): onderhoud.html (statisch, één bestand voor beide sites) en een blok bovenaan de root-.htaccess. Aan/uit met het lege bestand onderhoud.aan in de hoofdmap; vanaf Jans IP-adres (77.168.222.49) werkt de site gewoon. Getest in MAMP en op Versio.
+- 4789e59 Onderhoudsmodus, UPLOADLIJST.md + maaklijst.py, fotoos_wkz-oud/ verwijderd (besluit Jan, 10 okt; ook op de server), README.md weg.
+- **10 okt: intra.jhmz.nl LIVE op Versio met de nieuwe code.** Migraties, rechten omgezet, 22 wachtwoorden gehasht, getest (inloggen, rechten, 403's, intake-PDF, opslaan, mail). Uploadpakket: upload-jhmz/ (alleen gewijzigde bestanden + tcpdf/).
+- 0df81c9 verwijderknop(): kleiner prullenbak-icoon (font-size 0.85rem, line-height 1).
+- 9103dd7 Culemborg: eigen includes/statuslijst.php (41 codes).
+- b776c1d, 7f9e086 **Publieke site Zoetermeer (pub-jhmz) in git** (zonder configDB.php, logs en mediamappen); class/ gelijk aan de intranetten; includes/statuslijst.php; config.php met h() en SET NAMES utf8mb4; class copy/ weg.
+- c0afe6c pub-jhmz: coördinator-mail bij aanmelding ging naar 'aanmelding@https://…' (LOC_WEBSITE_PUB), nu LOC_DOMAIN_PUB; mailtest.php verwijderd (iedereen kon daarmee mail laten versturen).
+- **11 okt: publieke site Zoetermeer op Versio bijgewerkt** (upload-pub-jhmz/), getest met MAIL_TESTMODUS alleen voor Jans IP-adres. Alles werkt.
 
 ## CSRF (stap D deel 2)
 - Elk formulier met method="POST" moet `<?= csrf_veld() ?>` bevatten, anders geeft het opslaan "Het formulier kon niet worden verwerkt" (403).
@@ -60,27 +71,51 @@ Git: de repository staat in ~/Sites/jobhulp-intra. Commit fcce9c0 is de uitgangs
 - Eigen code: geen fouten en geen deprecations meer gevonden. Beperking: rooktest met bijna lege database.
 - PHPMailer 7.0.2: geschikt. TCPDF 6.11.4 (laatste van de 6-lijn); updaten = map tcpdf/ vervangen, .htaccess bewaren.
 
-## Checklist uitrollen naar Versio (per site)
-1. Back-up van database en bestanden.
-2. Migraties 2026-10-06_db-gelijktrekken_<site>.sql, 2026-10-07_wachtwoord-hash.sql, 2026-10-08_enquete-verwijderen.sql, 2026-10-08_pubquiz-verwijderen.sql, 2026-10-09_werkzkdBU-verwijderen.sql, 2026-10-09_utf8mb4.sql en 2026-10-09_rechten-gelijk_<site>.sql uitvoeren (utf8mb4 tegelijk met de nieuwe config.php).
-3. configDB.php op de server controleren/aanvullen:
+## Onderhoudsmodus
+- Aan: leeg bestand onderhoud.aan in de hoofdmap. Uit: onderhoud.aan verwijderen. De .htaccess hoeft daarvoor niet te veranderen; het blok mag permanent blijven staan.
+- Iedereen krijgt onderhoud.html met status 503, behalve de IP-adressen in het blok (één regel `RewriteCond %{REMOTE_ADDR} !=<adres>` per adres).
+- IPv6: loopt Jans verbinding via IPv6, dan ziet de server een ander adres dan "wat is mijn ip" (IPv4) toont. Zie je zelf de onderhoudspagina, kijk dan in het toegangslog in DirectAdmin welk adres de server ziet.
+- De pagina laadt elke 5 minuten opnieuw; na het onderhoud komt de bezoeker vanzelf op de gevraagde pagina.
+- De cronjob draait via de php-opdrachtregel en gaat niet via de .htaccess: die loopt tijdens het onderhoud gewoon door.
+- Submappen met een eigen `RewriteEngine On` in hun .htaccess vallen buiten het blok. Controle: `grep -rl RewriteEngine --include=.htaccess ~/Sites/jobhulp-intra`.
+
+## Checklist uitrollen naar Versio
+
+### Voorbereiding (eenmalig, lokaal)
+- Onderhoudsblok uit htaccess-onderhoud.txt bovenaan de root-.htaccess zetten, vóór de andere RewriteRules (beide sites). Eigen IP-adres invullen.
+- onderhoud.html in de hoofdmap van beide sites.
+- Testen in MAMP: onderhoud.aan aanmaken en het IP tijdelijk op een ander adres zetten → onderhoudspagina; terugzetten → site werkt. Daarna onderhoud.aan weer weg. Commit.
+- Submappen controleren met de grep-opdracht hierboven.
+- Tijdstip kiezen dat niet rond 6:15 valt, of de cronjob in DirectAdmin tijdelijk uitzetten.
+
+### Per site (één site tegelijk; de andere blijft gewoon open)
+1. **Onderhoud aan:** onderhoud.html uploaden, onderhoud.aan aanmaken, daarna de nieuwe root-.htaccess uploaden. Controleren met de telefoon via 4G (wifi uit): onderhoudspagina. Op de eigen pc: site werkt. Dit is meteen de controle dat mod_rewrite werkt op Versio.
+2. **Back-up** van database en bestanden. Pas nu, na stap 1: dan kan niemand meer iets wijzigen en is de back-up precies de toestand van vóór de uitrol.
+3. Migraties 2026-10-06_db-gelijktrekken_<site>.sql, 2026-10-07_wachtwoord-hash.sql, 2026-10-08_enquete-verwijderen.sql, 2026-10-08_pubquiz-verwijderen.sql, 2026-10-09_werkzkdBU-verwijderen.sql, 2026-10-09_utf8mb4.sql en 2026-10-09_rechten-gelijk_<site>.sql uitvoeren (utf8mb4 tegelijk met de nieuwe config.php).
+4. configDB.php op de server controleren/aanvullen:
    - LOC_WEBSITE_PUB, LOC_JG_NAAM, LOC_JG_EMAIL toevoegen.
    - LOC_WEBSITE = adres van het intranet (Culemborg: https://intra.jobhulpculemborg.nl, zonder / aan het eind). Voor de reset-link.
    - MAIL_SENDEREMAIL gelijk aan MAIL_USERID (anders weigert de SMTP-server).
    - MAIL_NOREPLYEMAIL en MAIL_LOGDIR moeten bestaan; MAIL_LOGDIR = __DIR__ . "/../logs/".
    - Zoetermeer: LOC_LOGO_PDF = "LogoJobHulpMaatjeZoetermeer.jpg".
    - MAIL_TESTMODUS NIET op de server zetten.
-4. beheerind omzetten: 2026-10-09_rechten-gelijk_<site>.sql, TEGELIJK met de nieuwe includes/rechten.php. Eerst de SELECT uit de kop van het bestand draaien om te zien wie wat wordt. Mag maar één keer (keytabel 'rechten_v2' blokkeert een tweede keer).
-5. PHP-versie in DirectAdmin op 8.3 (of hoger) zetten.
-6. Nieuwe code uploaden (verborgen .htaccess-bestanden meenemen). Nieuw: includes/rechten.php, includes/pdf_instellingen.php, foto.php, reset.php, maintenance/hash_wachtwoorden.php, de .htaccess-bestanden.
-7. Map tcpdf/ op de server helemaal vervangen.
-8. Op de server verwijderen: beheer/, beheer_oud/, index_nw.php, wijzwacht_nw.php, maintenance/config.php, includes/newsmsgs*.inc, enquete.php, includes/chk_enquete.inc, includes/body.inc, includes/pinkster.txt, beheerred/presentielijst.php, pubquiz.php, pubquizantw.php, score.php, pages/pubquizregels.php, en alles wat in f31364b is verwijderd.
-9. Als beheerder: /maintenance/hash_wachtwoorden.php (tellen), dan ?uitvoeren.
-10. Testen: inloggen, rechten, wachtwoord wijzigen/vergeten, foto's (privévenster: 403), /includes/navbar.php geeft 403, intake-PDF, nieuwe werkzoekende, namen met ' & é, postits/nieuws/agenda/forum met opmaak, verjaardagen in de agenda.
-11. Controleren of mod_rewrite werkt op Versio.
+5. beheerind omzetten: 2026-10-09_rechten-gelijk_<site>.sql, TEGELIJK met de nieuwe includes/rechten.php. Eerst de SELECT uit de kop van het bestand draaien om te zien wie wat wordt. Mag maar één keer (keytabel 'rechten_v2' blokkeert een tweede keer).
+6. PHP-versie in DirectAdmin op 8.3 (of hoger) zetten.
+7. Nieuwe code uploaden (verborgen .htaccess-bestanden meenemen). Nieuw: includes/rechten.php, includes/pdf_instellingen.php, foto.php, reset.php, maintenance/hash_wachtwoorden.php, de .htaccess-bestanden, onderhoud.html. onderhoud.aan niet weghalen of overschrijven.
+8. Map tcpdf/ op de server helemaal vervangen.
+9. Op de server verwijderen: beheer/, beheer_oud/, index_nw.php, wijzwacht_nw.php, maintenance/config.php, includes/newsmsgs*.inc, enquete.php, includes/chk_enquete.inc, includes/body.inc, includes/pinkster.txt, beheerred/presentielijst.php, pubquiz.php, pubquizantw.php, score.php, pages/pubquizregels.php, en alles wat in f31364b is verwijderd.
+10. Als beheerder: /maintenance/hash_wachtwoorden.php (tellen), dan ?uitvoeren.
+11. Testen (vanaf de eigen pc, terwijl de onderhoudsmodus nog aan staat): inloggen, rechten, wachtwoord wijzigen/vergeten, foto's (privévenster: 403), /includes/navbar.php geeft 403, intake-PDF, nieuwe werkzoekende, namen met ' & é, postits/nieuws/agenda/forum met opmaak, verjaardagen in de agenda. php_error.log controleren.
+12. **Onderhoud uit:** onderhoud.aan verwijderen. Met de telefoon via 4G controleren dat de site bereikbaar is en inloggen werkt. Cronjob weer aanzetten als die uit stond; de volgende ochtend controleren of de verjaardagskaarten verstuurd zijn.
+
+### Terugweg (als het misgaat)
+- Een fout die snel te verhelpen is: repareren terwijl de onderhoudsmodus aan blijft, opnieuw testen (stap 11), dan pas stap 12.
+- Lukt dat niet: database én bestanden samen terugzetten uit de back-up van stap 2. Nooit maar één van de twee: de migraties (wachtwoordhashes, beheerind, utf8mb4, verwijderde tabellen) passen niet bij de oude code, en de oude database past niet bij de nieuwe code.
+- PHP-versie in DirectAdmin terugzetten als die in stap 6 is veranderd en de oude code daar niet mee werkt.
+- Na het terugzetten onderhoud.aan verwijderen (staat de nieuwe .htaccess niet meer op de server, dan is de onderhoudsmodus vanzelf uit). Fout uitzoeken in MAMP en de uitrol later opnieuw doen.
 
 ## Stap C, B, A (samenvatting)
-- C: .htaccess (root + dichte mappen), foto.php via mod_rewrite (fotoos_person = ingelogd, fotoos_wkz = was_lezen). fotoos_wkz-oud/ dichtgezet, niet verwijderd (Jan beslist).
+- C: .htaccess (root + dichte mappen), foto.php via mod_rewrite (fotoos_person = ingelogd, fotoos_wkz = was_lezen). fotoos_wkz-oud/ verwijderd (besluit Jan, 10 okt).
 - B: password_hash/verifyPassword, reset-link 1 uur (sha256 in DB), min. 8 tekens. MAIL_TESTMODUS lokaal.
 - A: rechten.php per site; heeft_recht(), require_recht(), knop_uit().
 
@@ -102,6 +137,14 @@ Gezamenlijke indeling (vanaf 9 okt, gelijk voor beide sites):
 Rechten: forum_lezen 1-9; forum_schrijven 2-9; redactie 3,7,8,9; was_lezen 4-9; was_wijzigen 5,6,8,9; maatjes_wijzigen 6,9; presentie_anderen 6,9; beheerder 9.
 Oude 7/8 (redactie + WAS + maatjes) worden 6: zonder redactie (besluit Jan).
 
+## Publieke websites
+- pub-jhmz (jobhulpmaatjezoetermeer.nl): gebruikt Tools::MailRoom (aanmelding, workshop, partnerbijeenkomst, contact), getShortPost, sectOne, en de classes Werkzoekende, Processtap, Newsitem, Agendaitem, Jobgroup, Maatje, Keyrecord.
+- Mail testen zonder dat collega's mail krijgen: tijdelijk in includes/configDB.php van de site
+  `define("MAIL_TESTMODUS", ($_SERVER['REMOTE_ADDR'] ?? '') === '77.168.222.49');`
+  Dan gaat mail van Jans IP-adres naar het PHP-foutlog i.p.v. de mailbox. Daarna de regel weer weghalen.
+- Nog niet doorgelicht: de pagina's van de publieke sites zelf (escaping, formulieren, CSRF).
+- pub-jhc (Culemborg): map bestaat, nog leeg.
+
 ## Openstaande bevindingen
 HOOG
 5. ~~Geen CSRF-bescherming~~ opgelost in cca4ae9.
@@ -116,5 +159,7 @@ MIDDEL
 18. HTML-entiteiten (&eacute;) in de database; ruimen zich op bij opslaan; eventueel later een opschoonscript.
 
 ## Volgorde
-A, B, C, D klaar en door Jan getest in MAMP (9 okt: geen nieuwe fouten, php_error.log leeg). Volgende: uitrol naar Versio.
+A, B, C, D klaar. Zoetermeer (intranet + publieke site) live op Versio (10-11 okt).
+Volgende: uitrol intra.jobhulpculemborg.nl (upload-culemborg/ staat klaar; migraties _culemborg; configDB.php op de server aanvullen; jhcintradb.sql niet uploaden). Daarna publieke site Culemborg (pub-jhc).
+Opruimen op de server Zoetermeer na een paar dagen: class_oud/, config_oud.php, proces_aanmelding_oud.php (publieke site).
 E. Documentenfunctie, bouwt voort op A/C/D.
