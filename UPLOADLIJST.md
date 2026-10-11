@@ -18,13 +18,15 @@ Paden zijn relatief aan de hoofdmap van de site op de server. Opnieuw maken: `py
 ### Eerst (stap 1 van de checklist)
 - `onderhoud.html` en `.htaccess` in de hoofdmap, nadat `onderhoud.aan` is aangemaakt. In de lijsten hieronder staan ze voor de volledigheid nog een keer.
 
-### Nieuwe bestanden uploaden (17)
+### Nieuwe bestanden uploaden (19)
 Verborgen bestanden (`.htaccess`) staan erbij: zet in je FTP-programma "verborgen bestanden tonen" aan.
 
 - `.htaccess`
 - `PHPMailer/.htaccess`
 - `SQL queries/.htaccess`
 - `class/.htaccess`
+- `class/c_sucstor.php`
+- `class/c_sucstor_coll.php`
 - `docs/.htaccess`
 - `foto.php`
 - `fotoos_person/.htaccess`
@@ -175,13 +177,15 @@ Losse bestanden (39):
 ### Eerst (stap 1 van de checklist)
 - `onderhoud.html` en `.htaccess` in de hoofdmap, nadat `onderhoud.aan` is aangemaakt. In de lijsten hieronder staan ze voor de volledigheid nog een keer.
 
-### Nieuwe bestanden uploaden (16)
+### Nieuwe bestanden uploaden (18)
 Verborgen bestanden (`.htaccess`) staan erbij: zet in je FTP-programma "verborgen bestanden tonen" aan.
 
 - `.htaccess`
 - `PHPMailer/.htaccess`
 - `SQL queries/.htaccess`
 - `class/.htaccess`
+- `class/c_sucstor.php`
+- `class/c_sucstor_coll.php`
 - `docs/.htaccess`
 - `foto.php`
 - `fotoos_person/.htaccess`
