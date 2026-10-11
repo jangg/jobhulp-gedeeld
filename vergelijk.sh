@@ -1,7 +1,8 @@
 #!/bin/bash
 # ==================================================================
 # vergelijk.sh — controleert of beide intranetten gelijk lopen in:
-#   1. de map class/      (de PHP-classes moeten 100% gelijk zijn)
+#   1. de map class/      (de PHP-classes moeten 100% gelijk zijn, ook die
+#                          van de publieke websites pub-jhmz en pub-jhc)
 #      en includes/rechten.php (de rechten zijn voor beide sites gelijk)
 #   2. de database-structuur (tabellen, kolommen, indexen)
 #
@@ -41,6 +42,17 @@ else
 	echo "   LET OP: rechten.php verschilt (zie hierboven; < = jhmz, > = culemborg)"
 	FOUT=1
 fi
+# De publieke websites gebruiken dezelfde database en dus dezelfde classes.
+# Een map die (nog) niet bestaat, wordt overgeslagen.
+for PUB in pub-jhmz pub-jhc; do
+	[ -d "$PUB/class" ] || continue
+	if diff -r -x .DS_Store intra-jhmz/class "$PUB/class"; then
+		echo "   OK: classes van $PUB zijn gelijk"
+	else
+		echo "   LET OP: classes van $PUB verschillen (zie hierboven; < = intranet, > = $PUB)"
+		FOUT=1
+	fi
+done
 
 # --- 2. Database-structuur -----------------------------------------
 echo "== 2. Database-structuur vergelijken"
