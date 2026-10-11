@@ -1,1 +1,0 @@
-select achternaam, wzstatus from person, werkzkd inner join processtap where person.person_id = werkzkd.id_person AND werkzkd.status = processtap.wzstatus order by person.achternaam;

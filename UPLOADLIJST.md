@@ -1,9 +1,9 @@
 # Uploadlijst uitrol naar Versio
 
-Gemaakt op 10 oktober 2026 uit git: verschil tussen fcce9c0 (uitgangssituatie, gelijk aan de server) en de huidige bestanden, inclusief nog niet gecommitte wijzigingen.
+Gemaakt uit git: verschil tussen de tag `uitgangssituatie` in de repository van elke site (gelijk aan de server voor de doorlichting) en de huidige bestanden, inclusief nog niet gecommitte wijzigingen.
 Paden zijn relatief aan de hoofdmap van de site op de server. Opnieuw maken: `python3 maaklijst.py` (vraag Claude).
 
-**Let op:** dit gaat ervan uit dat de server nog gelijk is aan fcce9c0. Heb je sinds begin oktober iets rechtstreeks op de server gewijzigd, controleer dat dan eerst.
+**Let op:** dit gaat ervan uit dat de server nog gelijk is aan de uitgangssituatie (begin oktober). Voor intra.jhmz.nl klopt dat niet meer: die staat sinds 10 okt live met de nieuwe code.
 
 ## intra-culemborg (intra.jobhulpculemborg.nl)
 
@@ -18,7 +18,7 @@ Paden zijn relatief aan de hoofdmap van de site op de server. Opnieuw maken: `py
 ### Eerst (stap 1 van de checklist)
 - `onderhoud.html` en `.htaccess` in de hoofdmap, nadat `onderhoud.aan` is aangemaakt. In de lijsten hieronder staan ze voor de volledigheid nog een keer.
 
-### Nieuwe bestanden uploaden (16)
+### Nieuwe bestanden uploaden (17)
 Verborgen bestanden (`.htaccess`) staan erbij: zet in je FTP-programma "verborgen bestanden tonen" aan.
 
 - `.htaccess`
@@ -32,6 +32,7 @@ Verborgen bestanden (`.htaccess`) staan erbij: zet in je FTP-programma "verborge
 - `includes/.htaccess`
 - `includes/pdf_instellingen.php`
 - `includes/rechten.php`
+- `includes/statuslijst.php`
 - `logs/.htaccess`
 - `mail_apps/.htaccess`
 - `maintenance/hash_wachtwoorden.php`

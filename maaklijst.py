@@ -1,17 +1,18 @@
 import subprocess, os, collections
-BASE = "fcce9c0"
+BASE = "uitgangssituatie"   # tag in de git-repository van elke site
 SITES = [("intra-culemborg", "intra.jobhulpculemborg.nl"), ("intra-jhmz", "intra.jhmz.nl")]
-NIET = {"includes/configDB.php"}
+NIET = {"includes/configDB.php", ".gitignore"}   # .gitignore hoort bij git, niet op de server
 VERVANG = ["tcpdf/"]
 
-def git(*a):
-    return subprocess.run(["git", *a], capture_output=True, text=True, check=True).stdout
+def git(site, *a):
+    # Elke site heeft sinds 11 okt een eigen git-repository in zijn eigen map.
+    return subprocess.run(["git", "-C", site, *a], capture_output=True, text=True, check=True).stdout
 
 def oude_mappen(site):
-    namen = git("ls-tree", "-r", "--name-only", BASE, "--", site).splitlines()
+    namen = git(site, "ls-tree", "-r", "--name-only", BASE).splitlines()
     mappen = set()
     for n in namen:
-        p = n.split("/")[1:-1]
+        p = n.split("/")[:-1]
         for i in range(1, len(p) + 1):
             mappen.add("/".join(p[:i]) + "/")
     return mappen
@@ -20,20 +21,20 @@ out = []
 w = out.append
 w("# Uploadlijst uitrol naar Versio")
 w("")
-w(f"Gemaakt op 10 oktober 2026 uit git: verschil tussen {BASE} (uitgangssituatie, gelijk aan de server) en de huidige bestanden, inclusief nog niet gecommitte wijzigingen.")
+w(f"Gemaakt uit git: verschil tussen de tag `{BASE}` in de repository van elke site (gelijk aan de server voor de doorlichting) en de huidige bestanden, inclusief nog niet gecommitte wijzigingen.")
 w("Paden zijn relatief aan de hoofdmap van de site op de server. Opnieuw maken: `python3 maaklijst.py` (vraag Claude).")
 w("")
-w("**Let op:** dit gaat ervan uit dat de server nog gelijk is aan fcce9c0. Heb je sinds begin oktober iets rechtstreeks op de server gewijzigd, controleer dat dan eerst.")
+w("**Let op:** dit gaat ervan uit dat de server nog gelijk is aan de uitgangssituatie (begin oktober). Voor intra.jhmz.nl klopt dat niet meer: die staat sinds 10 okt live met de nieuwe code.")
 w("")
 for site, host in SITES:
-    regels = git("diff", "--name-status", "--no-renames", BASE, "--", site).splitlines()
+    regels = git(site, "diff", "--name-status", "--no-renames", BASE).splitlines()
     status = collections.defaultdict(list)
     for r in regels:
         s, pad = r.split("\t", 1)
-        status[s].append(pad[len(site) + 1:])
+        status[s].append(pad)
     # niet-gecommitte nieuwe bestanden
-    for pad in git("ls-files", "--others", "--exclude-standard", "--", site).splitlines():
-        status["A"].append(pad[len(site) + 1:])
+    for pad in git(site, "ls-files", "--others", "--exclude-standard").splitlines():
+        status["A"].append(pad)
     def buiten(p):
         return p in NIET or any(p.startswith(v) for v in VERVANG)
     nieuw = sorted(p for p in status["A"] if not buiten(p))

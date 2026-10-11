@@ -1,33 +1,19 @@
-# macOS-rommel
-.DS_Store
-
-# Foto's van personen: persoonsgegevens, horen niet in de versiegeschiedenis
-*/fotoos_person/*
-*/fotoos_wkz/*
-*/logs/*
-# ...maar de .htaccess in die mappen wel bewaren (die beschermt de foto's)
-!*/fotoos_person/.htaccess
-!*/fotoos_wkz/.htaccess
-!*/logs/.htaccess
-.fuse_hidden*
-
-# Schakelaar onderhoudsmodus: nooit in git
-*/onderhoud.aan
+# Deze repository bevat het GEDEELDE deel: migraties/, vergelijk.sh,
+# maaklijst.py en de documentatie. Elke site heeft sinds 11 okt 2026 een
+# eigen git-repository in zijn eigen map.
+/intra-jhmz/
+/intra-culemborg/
+/pub-jhmz/
+/pub-jhc/
 
 # Uploadpakketten voor de server (gemaakt door Claude)
 upload-*/
 
-# Projectinstellingen van Nova
-.nova/
+# Reservekopieën en grote bestanden
+/backup oude websites/
+DOORLICHTING.pdf
 
-# Publieke websites: alleen de code in git
-# - configDB.php bevat de echte wachtwoorden van de server
-# - logs en mediamappen (foto's, pdf's, video's, ruim 250 MB) blijven buiten git
-pub-*/includes/configDB.php
-pub-*/includes/logs/
-pub-*/img/
-pub-*/docs/
-pub-*/newsimages/
-pub-*/assets/
-pub-*/js/
-pub-*/vids/
+# macOS- en editor-rommel
+.DS_Store
+.fuse_hidden*
+.nova/
