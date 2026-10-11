@@ -8,6 +8,7 @@
 
 # Uploadpakketten voor de server (gemaakt door Claude)
 upload-*/
+herstel-*/
 
 # Reservekopieën en grote bestanden
 /backup oude websites/
