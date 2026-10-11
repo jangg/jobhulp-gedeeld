@@ -16,3 +16,18 @@
 
 # Uploadpakketten voor de server (gemaakt door Claude)
 upload-*/
+
+# Projectinstellingen van Nova
+.nova/
+
+# Publieke websites: alleen de code in git
+# - configDB.php bevat de echte wachtwoorden van de server
+# - logs en mediamappen (foto's, pdf's, video's, ruim 250 MB) blijven buiten git
+pub-*/includes/configDB.php
+pub-*/includes/logs/
+pub-*/img/
+pub-*/docs/
+pub-*/newsimages/
+pub-*/assets/
+pub-*/js/
+pub-*/vids/
