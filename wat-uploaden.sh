@@ -4,7 +4,12 @@
 #
 # In elke site wijst de git-tag "op-server" naar de stand die op de server
 # staat. Dit script toont per site het verschil tussen die tag en de
-# huidige bestanden (ook wijzigingen die nog niet gecommit zijn).
+# branch main: alleen main gaat naar de server. Nieuwe functies worden
+# gebouwd in een eigen branch (nu: documenten) en gaan pas mee als ze
+# klaar zijn en in main zijn samengevoegd.
+#
+# LET OP: Transmit uploadt wat er in de map staat. Upload dus alleen als
+# de site op main staat (het script waarschuwt anders). Wisselen: ./wissel.sh
 #
 #   ./wat-uploaden.sh                 alle vier de sites
 #   ./wat-uploaden.sh pub-jhc         één site
@@ -21,16 +26,21 @@ if [ "$1" = "--klaar" ]; then
 	if [ -n "$(git -C "$2" status --porcelain)" ]; then
 		echo "$2 heeft nog niet-gecommitte wijzigingen. Eerst committen (vraag Claude)."; exit 1
 	fi
-	git -C "$2" tag -f op-server HEAD >/dev/null && echo "$2: op-server staat nu op $(git -C "$2" log --oneline -1)"
+	git -C "$2" tag -f op-server main >/dev/null && echo "$2: op-server staat nu op $(git -C "$2" log --oneline -1 main)"
 	exit 0
 fi
 [ -n "$1" ] && SITES="$1"
 
 for s in $SITES; do
 	echo "=== $s  (op de server: $(git -C "$s" log --oneline -1 op-server 2>/dev/null || echo 'GEEN TAG op-server'))"
+	tak=$(git -C "$s" branch --show-current)
+	if [ "$tak" != "main" ]; then
+		echo "   !! Deze map staat op branch '$tak', niet op main. NIET uploaden; eerst ./wissel.sh main"
+	elif [ -n "$(git -C "$s" status --porcelain)" ]; then
+		echo "   !! Er zijn nog niet-gecommitte wijzigingen; die staan hieronder niet. Eerst committen (vraag Claude)."
+	fi
 	{
-		git -C "$s" diff --name-status --no-renames op-server
-		git -C "$s" ls-files --others --exclude-standard | sed 's/^/A\t/'
+		git -C "$s" diff --name-status --no-renames op-server main
 	} | grep -v -E $'\t(includes/configDB\\.php|\\.gitignore|.*\\.voorbeeld\\.php)$' | sort -u -k2 | awk -F'\t' '
 		$1=="D" { weg[++w]=$2; next }
 		        { op[++u]=$2 }
