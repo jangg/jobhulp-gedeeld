@@ -2,8 +2,8 @@
 # ==================================================================
 # vergelijk.sh — controleert of de vier websites gelijk lopen:
 #
-#   intra-jhmz       intranet Zoetermeer      (intra.jhmz.nl)
-#   intra-culemborg  intranet Culemborg       (intra.jobhulpculemborg.nl)  <- leidend
+#   intra-jhmz       intranet Zoetermeer      (intra.jhmz.nl)  <- leidend (sinds 28 okt 2026)
+#   intra-culemborg  intranet Culemborg       (intra.jobhulpculemborg.nl)
 #   pub-jhmz         publieke site Zoetermeer (jobhulpmaatjezoetermeer.nl)
 #   pub-jhc          publieke site Culemborg  (jobhulpculemborg.nl)
 #
@@ -39,7 +39,7 @@ FOUT=0
 
 # --- Hulpjes -------------------------------------------------------
 SITES="intra-jhmz intra-culemborg pub-jhmz pub-jhc"
-LEIDEND="intra-culemborg"
+LEIDEND="intra-jhmz"
 UITGEBREID=0
 [ "$1" = "-v" ] && UITGEBREID=1
 

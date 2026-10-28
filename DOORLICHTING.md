@@ -6,8 +6,8 @@ Vier sites in ~/Sites/jobhulp-intra, elk met een eigen git-repository (sinds 11 
 
 | Map | Site |
 |---|---|
-| intra-jhmz | intranet Zoetermeer, https://intra.jhmz.nl |
-| intra-culemborg | intranet Culemborg, https://intra.jobhulpculemborg.nl (leidend) |
+| intra-jhmz | intranet Zoetermeer, https://intra.jhmz.nl (leidend sinds 28 okt) |
+| intra-culemborg | intranet Culemborg, https://intra.jobhulpculemborg.nl |
 | pub-jhmz | publieke site Zoetermeer, https://jobhulpmaatjezoetermeer.nl |
 | pub-jhc | publieke site Culemborg, https://jobhulpculemborg.nl |
 
@@ -16,7 +16,7 @@ Vier sites in ~/Sites/jobhulp-intra, elk met een eigen git-repository (sinds 11 
 - Reservekopie van de oude gezamenlijke repository: backup oude websites/jobhulp-intra-git-2026-10-11.git.
 
 ## Uitgangspunten (van Jan)
-- intra-culemborg loopt voor en is leidend.
+- intra-jhmz (Zoetermeer) is leidend sinds 28 okt 2026 (besluit Jan): wijzigingen eerst in Zoetermeer, daarna in Culemborg. Tot 28 okt was intra-culemborg leidend.
 - Inhoud mag per site verschillen. DB-structuur en class/ moeten 100% gelijk zijn. Controle: ./vergelijk.sh.
 - class/ is in alle vier de sites gelijk, ook in de publieke sites (zelfde database). Een wijziging in class/ commit Claude in elke site apart.
 - De statuslijst (includes/statuslijst.php) verschilt per organisatie en staat daarom niet in class/. Binnen een organisatie is hij gelijk (intranet = publieke site).
