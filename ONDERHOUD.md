@@ -75,7 +75,9 @@ Algemene regel: **een link (GET) mag alleen iets tonen, nooit iets wijzigen.**
 
 De namen van de rechten staan in `includes/rechten.php` (gelijk voor beide sites):
 `forum_lezen`, `forum_schrijven`, `redactie`, `was_lezen`, `was_wijzigen`,
-`maatjes_wijzigen`, `presentie_anderen`, `beheerder`.
+`maatjes_wijzigen`, `presentie_anderen`, `documenten_gedeeld`, `documenten_eigen`,
+`documenten_werkzoekenden`, `beheerder`. (Tijdelijk niet gelijk: Zoetermeer heeft in de
+branch `systeem` rechten per gebruiker, zie hieronder.)
 
 ```php
 require_recht('was_lezen');            // bovenaan een pagina: anders "geen toegang"
@@ -91,7 +93,27 @@ if (heeft_recht('maatjes_wijzigen')) { // iets alleen tonen als iemand het mag
 `knop_uit()` is alleen gemak voor de gebruiker. Controleer bij het **verwerken**
 altijd nog met `require_recht()`.
 
-Wie welk niveau heeft, staat in `user.beheerind`. De niveaus betekenen in beide sites hetzelfde:
+**Rechten per gebruiker (branch `systeem`, Zoetermeer, nov 2026).**
+Elke gebruiker heeft zijn eigen lijst van rechten in de tabel `user_recht`
+(één regel per recht). De beheerder stelt ze in op **Beheer > Systeem**
+(`systeem.php`): vinkjes per recht, met profielknoppen (Maatje, Coördinator, ...).
+
+- Nieuw recht: één regel in `RECHTEN` in `includes/rechten.php`. Het vinkje
+  verschijnt vanzelf op het Systeem-scherm; de database verandert niet.
+- `VEREIST` in hetzelfde bestand: rechten die een ander recht nodig hebben
+  (bijv. `was_wijzigen` neemt `was_lezen` mee).
+- `PROFIELEN`: vaste combinaties voor de profielknoppen. Alleen de vinkjes
+  worden opgeslagen, niet het profiel.
+- `beheerder` mag alles en kan op het Systeem-scherm niet worden gewijzigd of
+  geblokkeerd. Beheerder maken: alleen in phpMyAdmin (`user_recht`).
+- Documenten: A = `documenten_gedeeld`, B = `documenten_eigen` (eigen
+  werkzoekenden), C = `documenten_werkzoekenden` (alle werkzoekenden).
+- Migratie: `migraties/2026-11-06_rechten-per-gebruiker_jhmz.sql` zet elk
+  oud niveau om naar dezelfde rechten. `user.beheerind` blijft voorlopig staan
+  maar wordt niet meer gebruikt (behalve als `user_recht` nog niet bestaat).
+
+**Tot de branch `systeem` live staat, en in Culemborg tot die volgt,** geldt nog
+het niveau in `user.beheerind`:
 
 | Niveau | Mag |
 |---|---|
@@ -105,9 +127,6 @@ Wie welk niveau heeft, staat in `user.beheerind`. De niveaus betekenen in beide 
 | 7 | redactie + WAS lezen |
 | 8 | redactie + WAS lezen en schrijven |
 | 9 | alles (beheerder) |
-
-Een niveau een ander recht geven: alleen `rechten.php` aanpassen, in **beide** sites
-gelijk (`./vergelijk.sh` controleert dat).
 
 ### 5. Veld waarin de redactie HTML-opmaak gebruikt? `Tools::veiligeHtml()` of `Tools::opmaakHtml()`
 
@@ -209,7 +228,7 @@ voer hem uit in beide databases (MAMP en later Versio), daarna `./vergelijk.sh`
 | Je ziet | Oorzaak | Oplossing |
 |---|---|---|
 | "Het formulier kon niet worden verwerkt" | `csrf_veld()` vergeten, of sessie verlopen | regel 2 toevoegen; of opnieuw inloggen |
-| "Je hebt geen toegang tot deze pagina" | niveau heeft dat recht niet | `rechten.php` of `beheerind` controleren |
+| "Je hebt geen toegang tot deze pagina" | gebruiker heeft dat recht niet | Beheer > Systeem (Culemborg: `rechten.php` of `beheerind`) |
 | `&lt;b&gt;` of `<b>` als tekst op het scherm | `h()` op een opmaakveld | `Tools::veiligeHtml()` of `opmaakHtml()` |
 | Opmaak verdwijnt (bijv. een plaatje) | `veiligeHtml()` is te streng voor dit veld | `opmaakHtml()` gebruiken |
 | Witte pagina | PHP-fout | `/Applications/MAMP/logs/php_error.log` |
