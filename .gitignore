@@ -18,3 +18,8 @@ DOORLICHTING.pdf
 .DS_Store
 .fuse_hidden*
 .nova/
+
+# Lokale documentenmap van MAMP (geüploade documenten; nooit in git)
+/jobhulp-documenten/
+# Word/PDF-stukken voor de organisaties (keuzedocument, prijsindicatie)
+/Documentsysteem/
