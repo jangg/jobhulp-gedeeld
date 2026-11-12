@@ -23,3 +23,7 @@ DOORLICHTING.pdf
 /jobhulp-documenten/
 # Word/PDF-stukken voor de organisaties (keuzedocument, prijsindicatie)
 /Documentsysteem/
+
+# Instructievideo's (staan ook in intra-jhmz/video) en de demo-omgeving: niet in git (nov 2026)
+instructievideos/
+intra-jhmz-demo/
