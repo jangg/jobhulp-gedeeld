@@ -408,9 +408,12 @@ Maatjes mogen het WAS **niet** lezen.
 `user.beheerind` staat nog in de database maar wordt in Zoetermeer niet meer
 gebruikt (behalve als de tabel `user_recht` nog niet bestaat).
 
-### Culemborg: nog niveaus (tot de rechten per gebruiker daar volgen)
+### Culemborg: nog niveaus op de server (tot de uitrol rond 20 nov 2026)
 
-In Culemborg geldt nog het niveau in `user.beheerind`:
+Lokaal heeft Culemborg sinds 13 nov dezelfde code als Zoetermeer (branch
+`gelijk-jhmz`). Op de server geldt tot de uitrol nog het niveau in
+`user.beheerind`. De migratie `2026-11-13_rechten-per-gebruiker_culemborg.sql`
+zet elk niveau om naar precies deze rechten (zelfde omzetting als Zoetermeer):
 
 | Niveau | Mag |
 |---|---|
@@ -615,23 +618,34 @@ past die met de hand aan; hij staat bewust niet in git.
 | | Zoetermeer | Culemborg |
 |---|---|---|
 | Doorlichting oktober (stappen A–D, PHP 8.3, TCPDF) | live | live |
-| Rechten per gebruiker + Systeem-scherm | live (8 nov) | nog niveaus; in branch `systeem` |
-| Documentsysteem (DBS) | live (8 nov) | nog niet; in branch `documenten` |
-| Intake-PDF opslaan in DBS | live (13 nov) | nog niet (heeft het DBS nodig) |
+| Rechten per gebruiker + Systeem-scherm | live (8 nov) | lokaal klaar in branch `gelijk-jhmz` (13 nov); server nog niveaus |
+| Documentsysteem (DBS) | live (8 nov) | lokaal klaar in branch `gelijk-jhmz`; server nog niet |
+| Intake-PDF opslaan in DBS | live (13 nov) | lokaal klaar in branch `gelijk-jhmz`; server nog niet |
 | Instructievideo's in het intranet | branch `instructievideos` | volgt met het DBS |
 
-### Tijdelijke uitzondering op "class/ gelijk"
+### class/ is lokaal weer overal gelijk (13 nov 2026)
 
-Omdat Zoetermeer eerst is uitgerold, verschilt `class/` nu tussen de organisaties:
-Culemborg heeft nog geen `c_documenten.php` en een oudere `c_user.php` en
-`c_maatje.php` (zonder rechten per gebruiker). Binnen een organisatie is class/
-wel gelijk (intranet en publieke site). Als Culemborg het DBS en de rechten per
-gebruiker krijgt, is alles weer gelijk.
+Sinds 13 nov is `class/` lokaal in alle vier de sites gelijk, mits Culemborg op
+de branch `gelijk-jhmz` staat (`intra-culemborg` en `pub-jhc`). Op de branch
+`main` van Culemborg staat nog wat nu op de server draait: zonder
+`c_documenten.php` en met de oudere `c_user.php` en `c_maatje.php`. Na de uitrol
+gaat `gelijk-jhmz` op in `main` en vervalt dit verschil. De oude branches
+`documenten` en `systeem` van Culemborg zijn achterhaald (versie van oktober).
 
 ### Open punten
 
-- **Culemborg bijwerken:** rechten per gebruiker, Systeem-scherm, DBS, intake-PDF
-  en de video's, op dezelfde manier als in Zoetermeer.
+- **Culemborg uitrollen (rond 20 nov 2026):** de code staat lokaal klaar in de
+  branch `gelijk-jhmz` van `intra-culemborg` en `pub-jhc`. Nog te doen:
+  1. lokale database `jhcintradb`: migraties `2026-10-12_documenten.sql`,
+     `2026-11-01_documenten-a-c.sql` en
+     `2026-11-13_rechten-per-gebruiker_culemborg.sql` (in die volgorde), daarna
+     `./vergelijk.sh` (moet ook bij de database OK geven);
+  2. map `~/Sites/jobhulp-documenten/culemborg/` aanmaken (DOC_DIR lokaal);
+  3. testen in MAMP;
+  4. uitrol naar Versio zoals Zoetermeer op 8 nov (onderhoudsmodus, back-up,
+     migraties, DOC_DIR op de server, PHP-instellingen), daarna `gelijk-jhmz`
+     samenvoegen met `main`.
+  De video's volgen als de branch `instructievideos` in Zoetermeer live is.
 - **Instructievideo's** inbouwen (helppagina en vraagteken-knoppen) en live zetten.
 - **AVG-opschoning:** periodiek gegevens opruimen van werkzoekenden en maatjes die
   niet meer bij de organisatie horen (ook jobgroup, nieuws, agenda). Uitgangspunten:
