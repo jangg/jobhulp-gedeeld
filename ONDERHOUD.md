@@ -484,6 +484,11 @@ De classes in `c_documenten.php` (alle methodes zijn `static`, dus `Document::zo
   maximum voor de gedeelde map.
 - **Opslag in gebruik:** aantal documenten en ruimte per ruimte en totaal.
 - **Controle:** bestanden zonder regel in de database en andersom.
+- **Eigen documenten opruimen:** staan er nog persoonlijke documenten uit de
+  testperiode (ruimte "eigen", optie B), dan staat er in het overzicht een regel
+  "Eigen documenten (uit de testperiode)" met een knop **Opruimen**. Die verwijdert
+  de regels én de bestanden (`Document::verwijderEigen()`). Er is geen scherm meer
+  om ze te bekijken; de beheerder kan er één openen met `document.php?id=<nummer>`.
 - **Wezen opruimen:** documenten van werkzoekenden die niet meer bestaan
   (bijvoorbeeld buiten het intranet om verwijderd in phpMyAdmin).
 
