@@ -6,6 +6,7 @@
  * Gebruik (in Terminal, in ~/Sites/jobhulp-intra, MAMP moet aan staan):
  *   /Applications/MAMP/bin/php/php8.3.x/bin/php anonimiseer.php
  *   /Applications/MAMP/bin/php/php8.3.x/bin/php anonimiseer.php intra-culemborg
+ *   /Applications/MAMP/bin/php/php8.3.x/bin/php anonimiseer.php intra-culemborg jhc_demo
  *   (8.3.x: het versienummer dat in /Applications/MAMP/bin/php/ staat)
  *
  * - Leest de databasegegevens uit <site>/includes/configDB.php (standaard intra-jhmz).
@@ -13,6 +14,9 @@
  * - De ORIGINELE database wordt alleen gelezen, nooit gewijzigd.
  * - Maakt een nieuwe database <naam>_anoniem (bijv. intraDB_anoniem); een
  *   bestaande met die naam wordt eerst weggegooid.
+ * - Tweede woord (mag weg): een eigen naam voor de kopie, bijv. jhc_demo voor
+ *   een demo-omgeving. Die naam moet "demo" of "anoniem" bevatten.
+ * - Plaatsnamen en postcodes passen bij de site (Culemborg of Zoetermeer).
  * - Laat aan het eind zien met welke gebruikersnaam je als welk niveau inlogt.
  *
  * Daarna in <site>/includes/configDB.php (lokaal) dbname=... veranderen in
@@ -35,7 +39,11 @@ if (!preg_match('/host=(localhost|127\.0\.0\.1)/', DB_DSN) || !preg_match('/dbna
 	stop("STOP: DB_DSN in $config wijst niet naar een lokale database:\n  " . DB_DSN . "\n");
 }
 $bron = $m[1];
-$doel = $bron . '_anoniem';
+$doel = $argv[2] ?? $bron . '_anoniem';
+if (!preg_match('/^[A-Za-z0-9_]+$/', $doel) || !preg_match('/demo|anoniem/i', $doel)) {
+	stop("STOP: de naam van de kopie ($doel) moet 'demo' of 'anoniem' bevatten (alleen letters, cijfers en _).\n");
+}
+if ($doel === $bron) stop("STOP: de kopie mag niet dezelfde naam hebben als de bron ($bron).\n");
 if (str_ends_with($bron, '_anoniem')) stop("STOP: $bron is zelf al een geanonimiseerde kopie.\n");
 
 // MAMP: liefst via het socket-bestand (werkt ook als netwerktoegang in MAMP uit staat)
@@ -78,7 +86,13 @@ $meisjes = ['Emma','Julia','Sophie','Anna','Sara','Fleur','Lotte','Noor','Eva','
 $achter  = ['Jansen','Bakker','Visser','Smit','Meijer','Mulder','Bos','Vos','Peters','Hendriks','Dekker','Brouwer','Dijkstra','Kok','Verhoeven','Postma','Kuiper','Hoekstra','Schouten','Willems','Koster','Prins','Huisman','Peeters','Groot'];
 $tussen  = ['', '', '', '', 'de', 'van', 'van der', 'van den'];
 $straten = ['Lindelaan','Beukenstraat','Eikenhof','Tulpweg','Rozengracht','Merelpad','Molenweg','Kerkstraat','Schoolstraat','Dorpsstraat','Parklaan','Vijverhof'];
-$plaatsen = ['Zoetermeer','Zoetermeer','Zoetermeer','Pijnacker','Benthuizen','Leidschendam','Den Haag'];
+// Plaatsnamen en postcodes van de organisatie waar de site bij hoort
+$culemborg = stripos($site, 'culemborg') !== false || stripos($site, 'jhc') !== false;
+$hoofdplaats = $culemborg ? 'Culemborg' : 'Zoetermeer';
+$plaatsen = $culemborg
+	? ['Culemborg','Culemborg','Culemborg','Beusichem','Buren','Geldermalsen','Tiel']
+	: ['Zoetermeer','Zoetermeer','Zoetermeer','Pijnacker','Benthuizen','Leidschendam','Den Haag'];
+$pcbegin = $culemborg ? '41' : '27';
 $kies = fn(array $a) => $a[mt_rand(0, count($a) - 1)];
 
 $personen = $db->query("SELECT person_id, geslacht, date_geboorte FROM person")->fetchAll(PDO::FETCH_ASSOC);
@@ -95,7 +109,7 @@ foreach ($personen as $p) {
 	$upd->execute([
 		':vn' => $vn, ':tv' => $kies($tussen), ':an' => $an,
 		':st' => $kies($straten), ':hn' => (string)mt_rand(1, 199),
-		':pc' => '27' . mt_rand(10, 99) . ' ' . chr(mt_rand(65, 90)) . chr(mt_rand(65, 90)),
+		':pc' => $pcbegin . mt_rand(10, 99) . ' ' . chr(mt_rand(65, 90)) . chr(mt_rand(65, 90)),
 		':wp' => $kies($plaatsen),
 		// example.com is een gereserveerd domein: mail daarheen komt nooit bij iemand aan
 		':em' => strtolower($vn . '.' . $an) . ".$id@example.com",
@@ -114,8 +128,8 @@ if ($heeft('intakeform')) {
 		'netwerken','andere_hulp','diploma','studie','werkervaring','werk_gewenst','voorwaarden','reistijd','vervoer',
 		'werkbijzh','overige_opm','advnietontv','advopmerkingen'], 'Fictieve tekst (testgegevens).');
 	// (nationaliteit en advmaatje zijn korte codes; die blijven zoals ze zijn)
-	$db->exec("UPDATE intakeform SET gebplaats = 'Zoetermeer', gebland = 'Nederland',
-		akkoord_plaats = 'Zoetermeer', akkoord_handtek = ''");
+	$db->exec("UPDATE intakeform SET gebplaats = '$hoofdplaats', gebland = 'Nederland',
+		akkoord_plaats = '$hoofdplaats', akkoord_handtek = ''");
 	// roepnaam en naam bij het akkoord: de nieuwe voornaam en naam van de werkzoekende
 	$db->exec("UPDATE intakeform i JOIN werkzkd w ON w.id = i.id_werkzkd JOIN person p ON p.person_id = w.id_person
 		SET i.roepnaam = p.voornaam, i.akkoord_naam = TRIM(CONCAT_WS(' ', p.voornaam, p.tussenvoegsels, p.achternaam))");

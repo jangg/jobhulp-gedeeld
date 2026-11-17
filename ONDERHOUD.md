@@ -63,6 +63,15 @@ Het intranet Zoetermeer staat op de server in `/domains/jhmz.nl/public_html/intr
 - **Demo-omgeving** voor instructievideo's: map `intra-jhmz-demo`, database
   `jhmz_demo` (fictieve gegevens), adres `http://intra-jhmz-demo.localhost:8888`.
   Staat niet in git.
+- **Demo-omgeving Culemborg** (17 nov 2026): map `intra-culemborg-demo`, database
+  `jhc_demo`, adres `http://intra-jhc-demo.localhost:8888`, documentenmap
+  `jobhulp-documenten/culemborg-demo/`. Staat niet in git. Het is een kopie van
+  `intra-culemborg` (branch `gelijk-jhmz`) zonder echte foto's (silhouetten) en
+  zonder logbestanden. Voorbeelddocumenten om te uploaden: `_demo_bestanden/`.
+  Database opnieuw maken (MAMP aan, in `~/Sites/jobhulp-intra`):
+  `php anonimiseer.php intra-culemborg jhc_demo`. Code bijwerken: de gewijzigde
+  bestanden uit `intra-culemborg` erheen kopiëren, behalve `includes/configDB.php`
+  en de mappen `fotoos_person` en `fotoos_wkz`.
 - Foutmeldingen van PHP: `/Applications/MAMP/logs/php_error.log`
 - Instellingen per site (wachtwoorden, databasenaam, documentenmap) staan in
   `includes/configDB.php`. Dat bestand staat **niet** in git en gaat **nooit**
