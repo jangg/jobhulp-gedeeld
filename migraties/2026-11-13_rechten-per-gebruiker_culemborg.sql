@@ -18,6 +18,8 @@
 -- werkzoekenden) krijgt iedereen vanaf niveau 2. Dat mocht een maatje al,
 -- het was alleen nog geen apart recht.
 --
+--   niveau 8           -> houdt in Culemborg ook maatjes_wijzigen en presentie_anderen
+--                         (besluit Jan, 18 nov 2026; zo stond het al in includes/rechten.php)
 --   niveau 9 (of 'j')  -> beheerder (de beheerder mag automatisch alles)
 --   niveau 0           -> geen rechten (wel inloggen)
 --
@@ -60,8 +62,8 @@ UNION ALL SELECT id, 'forum_schrijven'          FROM user WHERE beheerind IN ('2
 UNION ALL SELECT id, 'redactie'                 FROM user WHERE beheerind IN ('3','7','8')
 UNION ALL SELECT id, 'was_lezen'                FROM user WHERE beheerind IN ('4','5','6','7','8')
 UNION ALL SELECT id, 'was_wijzigen'             FROM user WHERE beheerind IN ('5','6','8')
-UNION ALL SELECT id, 'maatjes_wijzigen'         FROM user WHERE beheerind IN ('6')
-UNION ALL SELECT id, 'presentie_anderen'        FROM user WHERE beheerind IN ('6')
+UNION ALL SELECT id, 'maatjes_wijzigen'         FROM user WHERE beheerind IN ('6','8')
+UNION ALL SELECT id, 'presentie_anderen'        FROM user WHERE beheerind IN ('6','8')
 UNION ALL SELECT id, 'documenten_gedeeld'       FROM user WHERE beheerind IN ('5','6','8')
 UNION ALL SELECT id, 'documenten_eigen'         FROM user WHERE beheerind IN ('2','3','4','5','6','7','8')
 UNION ALL SELECT id, 'documenten_werkzoekenden' FROM user WHERE beheerind IN ('5','6','8')
