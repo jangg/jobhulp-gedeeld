@@ -1,7 +1,7 @@
 # Onderhoudsgids intranetten (Zoetermeer en Culemborg)
 
 Voor Jan, en voor wie het later van Jan overneemt.
-Stand: **13 november 2026**.
+Stand: **18 november 2026**.
 
 Deze gids beschrijft hoe de vier websites in elkaar zitten, hoe je ze veilig
 aanpast en live zet, en waar je moet kijken als er iets misgaat. Je hoeft niet
@@ -66,7 +66,7 @@ Het intranet Zoetermeer staat op de server in `/domains/jhmz.nl/public_html/intr
 - **Demo-omgeving Culemborg** (17 nov 2026): map `intra-culemborg-demo`, database
   `jhc_demo`, adres `http://intra-jhc-demo.localhost:8888`, documentenmap
   `jobhulp-documenten/culemborg-demo/`. Staat niet in git. Het is een kopie van
-  `intra-culemborg` (branch `gelijk-jhmz`) zonder echte foto's (silhouetten) en
+  `intra-culemborg` zonder echte foto's (silhouetten) en
   zonder logbestanden. Voorbeelddocumenten om te uploaden: `_demo_bestanden/`.
   Database opnieuw maken (MAMP aan, in `~/Sites/jobhulp-intra`):
   `php anonimiseer.php intra-culemborg jhc_demo`. Code bijwerken: de gewijzigde
@@ -373,7 +373,7 @@ Voorbeelden: `beheerwas/intake_pdf.php` en `documenten.php`.
 
 ## 5. Rechten en het Systeem-scherm
 
-### Zoetermeer: rechten per gebruiker (live sinds 8 nov 2026)
+### Rechten per gebruiker (Zoetermeer live 8 nov, Culemborg live 18 nov 2026)
 
 Elke gebruiker heeft zijn eigen lijst van rechten in de tabel `user_recht`
 (één regel per recht). De beheerder stelt ze in op **Beheer > Systeem**
@@ -414,17 +414,17 @@ Maatjes mogen het WAS **niet** lezen.
 - Het **beheerder-account** kan op het Systeem-scherm nooit gewijzigd, geblokkeerd
   of verwijderd worden. Beheerder maken kan alleen in phpMyAdmin (`user_recht`).
 
-`user.beheerind` staat nog in de database maar wordt in Zoetermeer niet meer
-gebruikt (behalve als de tabel `user_recht` nog niet bestaat).
+`user.beheerind` staat nog in de database maar wordt in beide intranetten niet
+meer gebruikt (behalve als de tabel `user_recht` nog niet bestaat).
 
-### Culemborg: nog niveaus op de server (tot de uitrol rond 20 nov 2026)
+### Hoe de niveaus zijn omgezet (geschiedenis)
 
-Lokaal heeft Culemborg sinds 13 nov dezelfde code als Zoetermeer (branch
-`gelijk-jhmz`). Op de server geldt tot de uitrol nog het niveau in
-`user.beheerind`. De migratie `2026-11-13_rechten-per-gebruiker_culemborg.sql`
-zet elk niveau om naar precies deze rechten (zelfde omzetting als Zoetermeer):
+Tot de uitrol stond in `user.beheerind` één niveau (0-9). Zoetermeer is op
+8 nov omgezet (`2026-11-06_rechten-per-gebruiker_jhmz.sql`), Culemborg op
+18 nov (`2026-11-13_rechten-per-gebruiker_culemborg.sql`). In Culemborg zijn de
+niveaus zo omgezet:
 
-| Niveau | Mag |
+| Niveau | Kreeg |
 |---|---|
 | 0 | inloggen, geen forum |
 | 1 | forum lezen (buitenstaander) |
@@ -434,11 +434,15 @@ zet elk niveau om naar precies deze rechten (zelfde omzetting als Zoetermeer):
 | 5 | 2 + WAS lezen en schrijven |
 | 6 | 5 + maatjes wijzigen/verwijderen, anderen aanmelden voor maatjesavonden |
 | 7 | redactie + WAS lezen |
-| 8 | redactie + WAS lezen en schrijven |
+| 8 | redactie + WAS lezen en schrijven + maatjes wijzigen + anderen aanmelden (besluit Jan, 18 nov) |
 | 9 | alles (beheerder) |
 
-De code gebruikt in beide sites dezelfde namen (`require_recht('was_lezen')`).
-`includes/rechten.php` vertaalt die in Culemborg naar niveaus.
+Iedereen vanaf niveau 2 kreeg ook `documenten_eigen`; wie het WAS mag wijzigen
+ook de gedeelde map en de documenten van alle werkzoekenden.
+
+`class/c_user.php` heeft nog een noodomzetting (`NIVEAU_RECHTEN`) voor als de
+tabel `user_recht` niet leesbaar is. Die volgt de oude omzetting (niveau 8
+zonder maatjes wijzigen). Kan weg zodra `beheerind` uit de database gaat.
 
 ---
 
@@ -536,8 +540,19 @@ gedeelde map, instellingen voor de beheerder) staan in
 `~/Sites/jobhulp-intra/instructievideos`. Ze zijn gemaakt in de demo-omgeving
 met fictieve gegevens. Culemborg gebruikt dezelfde video's.
 
-Het inbouwen in het intranet (een helppagina en vraagteken-knoppen per scherm)
-staat in de branch `instructievideos` van `intra-jhmz` en is nog **niet** live.
+Ze staan in beide intranetten live (Zoetermeer en Culemborg sinds 18 nov 2026):
+
+- de map `video/`: per video een `.mp4` en een `.jpg` (voorvertoning). Ze tonen
+  alleen verzonnen gegevens, dus ze staan zonder inlogcontrole op de server;
+- `includes/uitleg_videos.php`: de lijst `UITLEG_VIDEOS` (titel, bestand, wie
+  de video ziet) en de functies `uitleg_knop()` (vraagteken), `uitleg_venster()`
+  en `uitleg_videos()`;
+- `uitleg_documenten.php`: alle video's op één pagina, ook als tabblad
+  **Uitleg** op de documentenpagina.
+
+**Video toevoegen:** `.mp4` en `.jpg` met dezelfde naam in `video/` zetten, een
+regel in `UITLEG_VIDEOS` erbij, en waar nodig `uitleg_knop('…')` op het scherm.
+In beide intranetten hetzelfde doen.
 
 ---
 
@@ -591,7 +606,7 @@ past die met de hand aan; hij staat bewust niet in git.
 | Je ziet | Oorzaak | Oplossing |
 |---|---|---|
 | "Het formulier kon niet worden verwerkt" | `csrf_veld()` vergeten, of sessie verlopen | regel 2 toevoegen; of opnieuw inloggen |
-| "Je hebt geen toegang tot deze pagina" | gebruiker heeft dat recht niet | Beheer > Systeem (Culemborg: `beheerind`) |
+| "Je hebt geen toegang tot deze pagina" | gebruiker heeft dat recht niet | Beheer > Systeem |
 | `&lt;b&gt;` of `<b>` als tekst op het scherm | `h()` op een opmaakveld | `Tools::veiligeHtml()` of `opmaakHtml()` |
 | Opmaak verdwijnt (bijv. een plaatje) | `veiligeHtml()` is te streng voor dit veld | `opmaakHtml()` gebruiken |
 | Witte pagina | PHP-fout | `/Applications/MAMP/logs/php_error.log` (server: DirectAdmin, error log) |
@@ -625,42 +640,31 @@ past die met de hand aan; hij staat bewust niet in git.
 
 ---
 
-## 11. Stand van zaken en open punten (13 nov 2026)
+## 11. Stand van zaken en open punten (18 nov 2026)
 
 ### Wat waar live staat
+
+Sinds 18 nov 2026 hebben Zoetermeer en Culemborg dezelfde functies.
 
 | | Zoetermeer | Culemborg |
 |---|---|---|
 | Doorlichting oktober (stappen A–D, PHP 8.3, TCPDF) | live | live |
-| Rechten per gebruiker + Systeem-scherm | live (8 nov) | lokaal klaar in branch `gelijk-jhmz` (13 nov); server nog niveaus |
-| Documentsysteem (DBS) | live (8 nov) | lokaal klaar in branch `gelijk-jhmz`; server nog niet |
-| Intake-PDF opslaan in DBS | live (13 nov) | lokaal klaar in branch `gelijk-jhmz`; server nog niet |
-| Instructievideo's in het intranet | branch `instructievideos` | volgt met het DBS |
+| Rechten per gebruiker + Systeem-scherm | live (8 nov) | live (18 nov) |
+| Documentsysteem (DBS) | live (8 nov) | live (18 nov) |
+| Intake-PDF opslaan in DBS | live (13 nov) | live (18 nov) |
+| Instructievideo's in het intranet | live (18 nov) | live (18 nov) |
 
-### class/ is lokaal weer overal gelijk (13 nov 2026)
-
-Sinds 13 nov is `class/` lokaal in alle vier de sites gelijk, mits Culemborg op
-de branch `gelijk-jhmz` staat (`intra-culemborg` en `pub-jhc`). Op de branch
-`main` van Culemborg staat nog wat nu op de server draait: zonder
-`c_documenten.php` en met de oudere `c_user.php` en `c_maatje.php`. Na de uitrol
-gaat `gelijk-jhmz` op in `main` en vervalt dit verschil. De oude branches
-`documenten` en `systeem` van Culemborg zijn achterhaald (versie van oktober).
+Alle vier de sites staan op `main`, en `main` is gelijk aan wat op de server
+staat (tag `op-server`). `class/` en `includes/rechten.php` zijn in alle sites
+gelijk (`./vergelijk.sh`). Het draaiboek van de uitrol in Culemborg staat in
+Claude Docs ("Draaiboek uitrol Culemborg").
 
 ### Open punten
 
-- **Culemborg uitrollen (rond 20 nov 2026):** de code staat lokaal klaar in de
-  branch `gelijk-jhmz` van `intra-culemborg` en `pub-jhc`. Nog te doen:
-  1. lokale database `jhcintradb`: migraties `2026-10-12_documenten.sql`,
-     `2026-11-01_documenten-a-c.sql` en
-     `2026-11-13_rechten-per-gebruiker_culemborg.sql` (in die volgorde), daarna
-     `./vergelijk.sh` (moet ook bij de database OK geven);
-  2. map `~/Sites/jobhulp-documenten/culemborg/` aanmaken (DOC_DIR lokaal);
-  3. testen in MAMP;
-  4. uitrol naar Versio zoals Zoetermeer op 8 nov (onderhoudsmodus, back-up,
-     migraties, DOC_DIR op de server, PHP-instellingen), daarna `gelijk-jhmz`
-     samenvoegen met `main`.
-  De video's volgen als de branch `instructievideos` in Zoetermeer live is.
-- **Instructievideo's** inbouwen (helppagina en vraagteken-knoppen) en live zetten.
+- **GitHub opruimen:** op GitHub staan nog de oude branches `documenten` en
+  `systeem` (alle vier de sites), `instructievideos` (`intra-jhmz`) en
+  `gelijk-jhmz` (`intra-culemborg`, `pub-jhc`). Ze zijn allemaal opgegaan in
+  `main` en mogen weg.
 - **AVG-opschoning:** periodiek gegevens opruimen van werkzoekenden en maatjes die
   niet meer bij de organisatie horen (ook jobgroup, nieuws, agenda). Uitgangspunten:
   minstens twee jaar bewaren voor analyse en jaarverslag; gegevens van verwijderde
