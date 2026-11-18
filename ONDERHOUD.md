@@ -49,7 +49,6 @@ Het intranet Zoetermeer staat op de server in `/domains/jhmz.nl/public_html/intr
 - **`class/` is in alle vier de sites precies gelijk.** De publieke sites gebruiken
   dezelfde database en dezelfde classes als het intranet van hun organisatie.
   Wijzig je een class, kopieer hem dan naar de andere sites en draai `./vergelijk.sh`.
-  (Tijdelijke uitzondering: zie hoofdstuk 11.)
 - **De database-structuur is in beide organisaties gelijk.** De inhoud verschilt.
 - **Tabellen worden alleen binnen hun eigen class gelezen en geschreven**, nooit
   daarbuiten. `Person` is alleen een basisclass voor `Maatje` en `Werkzoekende`.
@@ -291,9 +290,8 @@ Twijfel je? Gebruik `h()`. Zie je dan `<b>` op het scherm, dan was het een opmaa
 ### 6. Wachtwoorden: niets aan doen
 
 Dat regelt de class `User` zelf (`verifyPassword()`, `setPassword()`).
-In Zoetermeer maak je gebruikers en wachtwoorden op het Systeem-scherm (hoofdstuk 5).
-In Culemborg nog in phpMyAdmin, met een leesbaar tijdelijk wachtwoord en
-`password_mod = 'j'`. Bij de eerste keer inloggen wordt het vanzelf versleuteld.
+Gebruikers en wachtwoorden maak je in beide intranetten op het Systeem-scherm
+(hoofdstuk 5).
 
 ---
 
@@ -448,7 +446,7 @@ zonder maatjes wijzigen). Kan weg zodra `beheerind` uit de database gaat.
 
 ## 6. Het documentsysteem (DBS)
 
-Live in Zoetermeer sinds 8 nov 2026. Vervangt Dropbox. Alles blijft binnen het
+Live in Zoetermeer sinds 8 nov en in Culemborg sinds 18 nov 2026. Vervangt Dropbox. Alles blijft binnen het
 intranet; er gaan geen bestanden naar buitenstaande diensten.
 
 ### Wat de gebruikers zien
@@ -469,7 +467,8 @@ intranet; er gaan geen bestanden naar buitenstaande diensten.
 - **De gegevens** staan in de database: tabellen `document`, `docmap` (mappen,
   met `parent_id` voor submappen) en `instelling` (de instellingen van de beheerder).
 - **De bestanden** staan in `DOC_DIR`, een map **buiten** `public_html`, ingesteld
-  in `includes/configDB.php`. Lokaal: `~/Sites/jobhulp-intra/jobhulp-documenten/zoetermeer/`.
+  in `includes/configDB.php`. Lokaal: `~/Sites/jobhulp-intra/jobhulp-documenten/zoetermeer/` en
+  `.../culemborg/`. Op de server: een map naast `public_html`.
 - Elk bestand krijgt in `DOC_DIR` een **willekeurige naam van 32 tekens**. De echte
   naam staat alleen in de database. Niemand kan een bestand via een webadres
   opvragen of raden; downloaden gaat altijd via `document.php`, die eerst de
