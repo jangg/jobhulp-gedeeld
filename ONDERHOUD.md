@@ -523,6 +523,43 @@ Op het intakescherm staan drie knoppen: **maak PDF**, **PDF opslaan** en **terug
 intranet zelf maakt (een export, een overzicht). Gebruik voor bestanden van
 gebruikers altijd `Document::upload()`.
 
+### Bekijken zonder downloaden (voorbeeldvenster, branch `voorbeeld`, nov 2026)
+
+In de documentenlijst staat bij elk document dat te bekijken is een **oog-knop**;
+klikken op de naam doet hetzelfde. Er komt dan niets in de map Downloads.
+
+| Soort | Hoe het getoond wordt |
+|---|---|
+| pdf, jpg, jpeg, png | nieuw tabblad, de browser toont het zelf (`document.php?id=..&bekijk=1`, `inline`) |
+| docx | voorbeeldvenster, met docx-preview (pagina's zoals in Word) |
+| xlsx, xls, ods, csv | voorbeeldvenster, met SheetJS (tabel, tabbladen bovenaan; verborgen tabbladen niet) |
+| txt | voorbeeldvenster, als platte tekst |
+| doc, odt, ppt, pptx, rtf | geen voorbeeld, alleen downloaden |
+
+- Werkt in Edge/Chrome op Windows 11, Safari/Chrome op de Mac, iPhone en iPad.
+- **Code:** `js/voorbeeld.js` (het venster) en de bibliotheken in `js/voorbeeld/`:
+  `docx-preview.min.js` 0.4.1, `jszip.min.js` 3.10.2 (nodig voor docx-preview) en
+  `xlsx.full.min.js` (SheetJS 0.20.3). Ze staan op onze eigen server en worden pas
+  geladen als iemand op "bekijken" klikt. Er gaat **geen document naar een
+  externe dienst**: de browser haalt het op via `document.php` (dezelfde
+  rechtencontrole als downloaden) en tekent het zelf.
+- **Veiligheid:** het voorbeeld staat in een afgeschermd `<iframe>` (sandbox
+  zonder scripts). Daarnaast haalt `maakVeilig()` scripts en `on...`-attributen
+  weg; links werken alleen als ze met `http(s):` of `mailto:` beginnen en openen
+  in een nieuw tabblad.
+- **Grenzen** (bovenin `voorbeeld.js`): bestanden boven 20 MB worden gewoon
+  gedownload; per Excel-tabblad maximaal 2000 rijen, met een melding.
+- Het blijft een voorbeeld: ingewikkelde Word-opmaak (tekstvakken, grafieken)
+  kan er anders uitzien dan in Word. Aanpassen = downloaden.
+- Een nieuwe soort toevoegen: in `voorbeeld.js` de lijst `SOORT` en in
+  `documenten.php` de lijst bij `$voorbeeld`.
+- **SheetJS bijwerken:** de nieuwste versies staan niet meer op npm, alleen op
+  cdn.sheetjs.com. Deze kopie komt uit het npm-pakket `@e965/xlsx`, een
+  ongewijzigde doorpublicatie van 0.20.3. Gebruik nooit `xlsx` 0.18.5 van npm:
+  die heeft bekende veiligheidsfouten.
+- Na een update van `voorbeeld.js`: het getal in `voorbeeld.js?v=1` onderaan
+  `documenten.php` ophogen, dan laden de browsers de nieuwe versie.
+
 ### Opruimen en reservekopieën
 
 - `maintenance/cleanDB.php` verwijdert werkzoekenden met `delind = 'j'` en neemt
@@ -670,4 +707,7 @@ Claude Docs ("Draaiboek uitrol Culemborg").
   werkzoekenden als export aan de organisaties geven. **Er wordt niets gebouwd
   voordat beide besturen akkoord zijn.** De opgeslagen documenten (ook de
   intake-PDF's) gaan mee via `Document::verwijderAllesVan()`.
+- **Voorbeeldvenster (bekijken zonder downloaden):** gebouwd in branch `voorbeeld` van
+  `intra-jhmz` (22 nov 2026), wordt getest op Mac en Windows 11 (Parallels). Daarna
+  samenvoegen in `main`, publiceren, en dezelfde wijziging in `intra-culemborg`.
 - **MAMP PRO 7:** upgraden als er tijd is.
