@@ -523,7 +523,7 @@ Op het intakescherm staan drie knoppen: **maak PDF**, **PDF opslaan** en **terug
 intranet zelf maakt (een export, een overzicht). Gebruik voor bestanden van
 gebruikers altijd `Document::upload()`.
 
-### Bekijken zonder downloaden (voorbeeldvenster, Zoetermeer live 22 nov 2026)
+### Bekijken zonder downloaden (voorbeeldvenster, live in beide intranetten 22 nov 2026)
 
 In de documentenlijst staat bij elk document dat te bekijken is een **oog-knop**;
 klikken op de naam doet hetzelfde. Er komt dan niets in de map Downloads.
@@ -689,6 +689,7 @@ Sinds 18 nov 2026 hebben Zoetermeer en Culemborg dezelfde functies.
 | Documentsysteem (DBS) | live (8 nov) | live (18 nov) |
 | Intake-PDF opslaan in DBS | live (13 nov) | live (18 nov) |
 | Instructievideo's in het intranet | live (18 nov) | live (18 nov) |
+| Voorbeeldvenster documenten (bekijken zonder downloaden) | live (22 nov) | live (22 nov) |
 
 Alle vier de sites staan op `main`, en `main` is gelijk aan wat op de server
 staat (tag `op-server`). `class/` en `includes/rechten.php` zijn in alle sites
@@ -707,7 +708,4 @@ Claude Docs ("Draaiboek uitrol Culemborg").
   werkzoekenden als export aan de organisaties geven. **Er wordt niets gebouwd
   voordat beide besturen akkoord zijn.** De opgeslagen documenten (ook de
   intake-PDF's) gaan mee via `Document::verwijderAllesVan()`.
-- **Voorbeeldvenster (bekijken zonder downloaden):** live in Zoetermeer (22 nov 2026).
-  Voor Culemborg klaar in branch `voorbeeld` van `intra-culemborg`: testen,
-  samenvoegen in `main`, publiceren, pushen.
 - **MAMP PRO 7:** upgraden als er tijd is.
