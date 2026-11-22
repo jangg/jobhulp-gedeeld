@@ -534,7 +534,7 @@ klikken op de naam doet hetzelfde. Er komt dan niets in de map Downloads.
 | docx | voorbeeldvenster, met docx-preview (pagina's zoals in Word) |
 | xlsx, xls, ods, csv | voorbeeldvenster, met SheetJS (tabel, tabbladen bovenaan; verborgen tabbladen niet) |
 | txt | voorbeeldvenster, als platte tekst |
-| doc, odt, ppt, pptx, rtf | geen voorbeeld, alleen downloaden |
+| doc, odt, ppt, pptx, rtf en overige | geen voorbeeld: grijs doorgestreept oogje; klikken toont uitleg (bijv. "sla op als .docx"). Teksten: `$tipGeen` in `documenten.php` |
 
 - Werkt in Edge/Chrome op Windows 11, Safari/Chrome op de Mac, iPhone en iPad.
 - **Code:** `js/voorbeeld.js` (het venster) en de bibliotheken in `js/voorbeeld/`:
@@ -557,7 +557,7 @@ klikken op de naam doet hetzelfde. Er komt dan niets in de map Downloads.
   cdn.sheetjs.com. Deze kopie komt uit het npm-pakket `@e965/xlsx`, een
   ongewijzigde doorpublicatie van 0.20.3. Gebruik nooit `xlsx` 0.18.5 van npm:
   die heeft bekende veiligheidsfouten.
-- Na een update van `voorbeeld.js`: het getal in `voorbeeld.js?v=1` onderaan
+- Na een update van `voorbeeld.js`: het getal in `voorbeeld.js?v=2` onderaan
   `documenten.php` ophogen, dan laden de browsers de nieuwe versie.
 
 ### Opruimen en reservekopieën
