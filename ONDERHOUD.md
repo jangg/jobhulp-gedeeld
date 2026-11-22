@@ -523,7 +523,7 @@ Op het intakescherm staan drie knoppen: **maak PDF**, **PDF opslaan** en **terug
 intranet zelf maakt (een export, een overzicht). Gebruik voor bestanden van
 gebruikers altijd `Document::upload()`.
 
-### Bekijken zonder downloaden (voorbeeldvenster, branch `voorbeeld`, nov 2026)
+### Bekijken zonder downloaden (voorbeeldvenster, Zoetermeer live 22 nov 2026)
 
 In de documentenlijst staat bij elk document dat te bekijken is een **oog-knop**;
 klikken op de naam doet hetzelfde. Er komt dan niets in de map Downloads.
@@ -707,7 +707,7 @@ Claude Docs ("Draaiboek uitrol Culemborg").
   werkzoekenden als export aan de organisaties geven. **Er wordt niets gebouwd
   voordat beide besturen akkoord zijn.** De opgeslagen documenten (ook de
   intake-PDF's) gaan mee via `Document::verwijderAllesVan()`.
-- **Voorbeeldvenster (bekijken zonder downloaden):** gebouwd in branch `voorbeeld` van
-  `intra-jhmz` (22 nov 2026), wordt getest op Mac en Windows 11 (Parallels). Daarna
-  samenvoegen in `main`, publiceren, en dezelfde wijziging in `intra-culemborg`.
+- **Voorbeeldvenster (bekijken zonder downloaden):** live in Zoetermeer (22 nov 2026).
+  Voor Culemborg klaar in branch `voorbeeld` van `intra-culemborg`: testen,
+  samenvoegen in `main`, publiceren, pushen.
 - **MAMP PRO 7:** upgraden als er tijd is.
